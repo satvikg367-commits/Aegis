@@ -5,7 +5,36 @@ import { createSeedDatabase } from "./seed.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DB_PATH = path.resolve(__dirname, "../../data/db.json");
+
+function isDirectoryWritable(dirPath) {
+  try {
+    fs.mkdirSync(dirPath, { recursive: true });
+    fs.accessSync(dirPath, fs.constants.W_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function resolveDbPath() {
+  const configuredDir = process.env.DATA_DIR;
+  const candidateDirs = [
+    configuredDir,
+    path.resolve(__dirname, "../../data"),
+    "/tmp/defence-portal-data"
+  ].filter(Boolean);
+
+  for (const dir of candidateDirs) {
+    if (isDirectoryWritable(dir)) {
+      return path.join(dir, "db.json");
+    }
+  }
+
+  // Last resort; if this also fails, callers will surface the write error.
+  return path.resolve(__dirname, "../../data/db.json");
+}
+
+const DB_PATH = resolveDbPath();
 
 function ensureDbFile() {
   if (!fs.existsSync(DB_PATH)) {

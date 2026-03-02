@@ -40,6 +40,7 @@ export default function LoginPage() {
 
   return (
     <div className="auth-card">
+      <div className="auth-brand">AEGIS</div>
       <h1>Secure Login</h1>
       <p>Access pension, healthcare, career, and community modules.</p>
       {error && <div className="alert error">{error}</div>}

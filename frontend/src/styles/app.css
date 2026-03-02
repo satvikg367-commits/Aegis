@@ -258,6 +258,16 @@ th {
   box-shadow: 0 10px 20px rgba(10, 40, 70, 0.07);
 }
 
+.auth-brand {
+  margin: 0 0 0.25rem;
+  font-size: clamp(2.2rem, 6.5vw, 3.5rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0d3d67;
+}
+
 .auth-links {
   margin-top: 0.9rem;
   display: flex;
@@ -321,6 +331,10 @@ th {
 .high-contrast .auth-card {
   background: #111;
   border-color: #8c8c8c;
+}
+
+.high-contrast .auth-brand {
+  color: #6fb9ff;
 }
 
 .high-contrast input,

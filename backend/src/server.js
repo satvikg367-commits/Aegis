@@ -45,6 +45,15 @@ app.use(
 );
 app.use(express.json({ limit: "1mb" }));
 
+app.get("/", (_req, res) => {
+  res.status(200).json({
+    app: "Retired Defence Officers Portal API",
+    message: "API is running.",
+    health: "/health",
+    meta: "/api/meta"
+  });
+});
+
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });

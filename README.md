@@ -81,6 +81,7 @@ Frontend URL: `http://localhost:5173`
 - Password recovery returns reset token in API response for development.
 - Use HTTPS, secure secret management, and a real DB (PostgreSQL/MySQL) for production.
 - If Vite hangs when running from `Downloads`, move the project to a non-Downloads path (example: `/Users/satvikgupta/defence-portal`) and run frontend there.
+- Frontend routing fallback for hosting is included via `frontend/public/_redirects` so direct links like `/login` work after deployment.
 
 ## Production Hardening Checklist
 

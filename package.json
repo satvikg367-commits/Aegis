@@ -1,0 +1,9 @@
+{
+  "name": "defence-portal-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "demo": "bash scripts/run-demo.sh",
+    "demo:stop": "bash scripts/stop-demo.sh"
+  }
+}

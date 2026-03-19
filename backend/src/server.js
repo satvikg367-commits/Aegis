@@ -20,6 +20,15 @@ const configuredOrigins = (process.env.FRONTEND_ORIGIN || "http://localhost:5173
   .split(",")
   .map((item) => item.trim())
   .filter(Boolean);
+const configuredOriginPatterns = (
+  process.env.FRONTEND_ORIGIN_PATTERNS || "https://*.onrender.com,http://*.onrender.com"
+)
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
+const allowPrivateNetworkOrigins = process.env.ALLOW_PRIVATE_NETWORK_ORIGINS !== "false";
+const allowAllOrigins = process.env.CORS_ALLOW_ALL === "true" || configuredOrigins.includes("*");
+const privateNetworkOriginPattern = /^https?:\/\/(?:localhost|127\.0\.0\.1|10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?::\d+)?$/i;
 
 const allowedOrigins = new Set(configuredOrigins);
 for (const origin of configuredOrigins) {
@@ -31,17 +40,27 @@ for (const origin of configuredOrigins) {
   }
 }
 
+const wildcardPatternToRegex = (pattern) =>
+  new RegExp(`^${pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*")}$`, "i");
+const allowedOriginRegexes = configuredOriginPatterns.map(wildcardPatternToRegex);
+
+const isOriginAllowed = (origin) => {
+  if (!origin || allowAllOrigins) return true;
+  if (allowedOrigins.has(origin)) return true;
+  if (allowPrivateNetworkOrigins && privateNetworkOriginPattern.test(origin)) return true;
+  return allowedOriginRegexes.some((regex) => regex.test(origin));
+};
+
+const corsOptions = {
+  origin(origin, callback) {
+    callback(null, isOriginAllowed(origin));
+  },
+  credentials: false,
+  optionsSuccessStatus: 204
+};
+
 app.use(
-  cors({
-    origin(origin, callback) {
-      if (!origin || allowedOrigins.has(origin)) {
-        callback(null, true);
-        return;
-      }
-      callback(new Error(`Not allowed by CORS: ${origin}`));
-    },
-    credentials: false
-  })
+  cors(corsOptions)
 );
 app.use(express.json({ limit: "1mb" }));
 
@@ -88,5 +107,7 @@ app.use((err, _req, res, _next) => {
 });
 
 app.listen(port, () => {
-  console.log(`API listening on http://localhost:${port}`);
+  console.log(`API listening on http://lcd /Users/satvikgupta/Downloads/defence/project/frontend
+npm run dev
+ocalhost:${port}`);
 });

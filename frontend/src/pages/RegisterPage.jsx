@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "../api/client";
+
+const ThreeScene = lazy(() => import("../components/ThreeScene"));
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -25,30 +27,35 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="auth-card">
-      <h1>Create Account</h1>
-      <p>Register as retired defence officer to access all services.</p>
-      {error && <div className="alert error">{error}</div>}
-      <form className="form-grid" onSubmit={onSubmit}>
-        <label>
-          Full Name
-          <input value={form.fullName} onChange={(e) => update("fullName", e.target.value)} required />
-        </label>
-        <label>
-          Email
-          <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required />
-        </label>
-        <label>
-          Mobile Number
-          <input value={form.phone} onChange={(e) => update("phone", e.target.value)} required />
-        </label>
-        <label>
-          Password
-          <input type="password" value={form.password} onChange={(e) => update("password", e.target.value)} minLength={8} required />
-        </label>
-        <button type="submit" disabled={loading}>{loading ? "Creating..." : "Register"}</button>
-      </form>
-      <div className="auth-links"><Link to="/login">Back to login</Link></div>
+    <div className="login-stage auth-stage">
+      <Suspense fallback={null}>
+        <ThreeScene mode="ambient" className="auth-three-scene" />
+      </Suspense>
+      <div className="auth-card">
+        <h1>Create Account</h1>
+        <p>Register as retired defence officer to access all services.</p>
+        {error && <div className="alert error">{error}</div>}
+        <form className="form-grid" onSubmit={onSubmit}>
+          <label>
+            Full Name
+            <input value={form.fullName} onChange={(e) => update("fullName", e.target.value)} required />
+          </label>
+          <label>
+            Email
+            <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required />
+          </label>
+          <label>
+            Mobile Number
+            <input value={form.phone} onChange={(e) => update("phone", e.target.value)} required />
+          </label>
+          <label>
+            Password
+            <input type="password" value={form.password} onChange={(e) => update("password", e.target.value)} minLength={8} required />
+          </label>
+          <button type="submit" disabled={loading}>{loading ? "Creating..." : "Register"}</button>
+        </form>
+        <div className="auth-links"><Link to="/login">Back to login</Link></div>
+      </div>
     </div>
   );
 }

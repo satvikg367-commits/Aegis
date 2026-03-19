@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bgP" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e3a5f"/>
+    </linearGradient>
+    <marker id="arrP" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#7dd3fc"/>
+    </marker>
+    <style>
+      .title { font: 700 56px Arial, sans-serif; fill: #ffffff; }
+      .sub { font: 400 30px Arial, sans-serif; fill: #c7def2; }
+      .step { fill: #f8fbff; stroke: #cfe2f5; stroke-width: 2; }
+      .num { font: 700 40px Arial, sans-serif; fill: #0b3b66; }
+      .txt { font: 600 34px Arial, sans-serif; fill: #23435f; }
+      .small { font: 500 27px Arial, sans-serif; fill: #456380; }
+      .foot { font: 500 24px Arial, sans-serif; fill: #d7e9fb; }
+    </style>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#bgP)"/>
+
+  <text x="80" y="100" class="title">AEGIS Demo Flow</text>
+  <text x="80" y="150" class="sub">3-4 minute hackathon presentation sequence</text>
+
+  <rect x="80" y="220" width="420" height="170" rx="24" class="step"/>
+  <text x="120" y="285" class="num">1</text>
+  <text x="170" y="285" class="txt">Login</text>
+  <text x="120" y="340" class="small">AEGIS + Secure Login</text>
+
+  <rect x="580" y="220" width="420" height="170" rx="24" class="step"/>
+  <text x="620" y="285" class="num">2</text>
+  <text x="670" y="285" class="txt">Dashboard</text>
+  <text x="620" y="340" class="small">Quick metrics overview</text>
+
+  <rect x="580" y="480" width="420" height="170" rx="24" class="step"/>
+  <text x="620" y="545" class="num">3</text>
+  <text x="670" y="545" class="txt">Pension</text>
+  <text x="620" y="600" class="small">Add expense + request</text>
+
+  <rect x="80" y="480" width="420" height="170" rx="24" class="step"/>
+  <text x="120" y="545" class="num">4</text>
+  <text x="170" y="545" class="txt">Healthcare</text>
+  <text x="120" y="600" class="small">Book appointment</text>
+
+  <rect x="80" y="740" width="420" height="170" rx="24" class="step"/>
+  <text x="120" y="805" class="num">5</text>
+  <text x="170" y="805" class="txt">Career</text>
+  <text x="120" y="860" class="small">Jobs + workshop</text>
+
+  <rect x="580" y="740" width="420" height="170" rx="24" class="step"/>
+  <text x="620" y="805" class="num">6</text>
+  <text x="670" y="805" class="txt">Community</text>
+  <text x="620" y="860" class="small">Post or reply in forum</text>
+
+  <rect x="580" y="1000" width="420" height="170" rx="24" class="step"/>
+  <text x="620" y="1065" class="num">7</text>
+  <text x="670" y="1065" class="txt">Feedback</text>
+  <text x="620" y="1120" class="small">Submit issue/suggestion</text>
+
+  <rect x="80" y="1000" width="420" height="170" rx="24" class="step"/>
+  <text x="120" y="1065" class="num">8</text>
+  <text x="170" y="1065" class="txt">Profile &amp; 2FA</text>
+  <text x="120" y="1120" class="small">Accessibility + security</text>
+
+  <line x1="500" y1="305" x2="580" y2="305" stroke="#7dd3fc" stroke-width="5" marker-end="url(#arrP)"/>
+  <line x1="790" y1="390" x2="790" y2="480" stroke="#7dd3fc" stroke-width="5" marker-end="url(#arrP)"/>
+  <line x1="580" y1="565" x2="500" y2="565" stroke="#7dd3fc" stroke-width="5" marker-end="url(#arrP)"/>
+  <line x1="290" y1="650" x2="290" y2="740" stroke="#7dd3fc" stroke-width="5" marker-end="url(#arrP)"/>
+  <line x1="500" y1="825" x2="580" y2="825" stroke="#7dd3fc" stroke-width="5" marker-end="url(#arrP)"/>
+  <line x1="790" y1="910" x2="790" y2="1000" stroke="#7dd3fc" stroke-width="5" marker-end="url(#arrP)"/>
+  <line x1="580" y1="1085" x2="500" y2="1085" stroke="#7dd3fc" stroke-width="5" marker-end="url(#arrP)"/>
+
+  <rect x="80" y="1300" width="920" height="380" rx="24" fill="#0f2e4f" stroke="#2a4d70" stroke-width="2"/>
+  <text x="120" y="1370" style="font: 700 34px Arial, sans-serif; fill: #ffffff;">Judge Demo Script (Quick)</text>
+  <text x="120" y="1430" class="foot">1) Login and show dashboard insights</text>
+  <text x="120" y="1480" class="foot">2) Add pension expense and submit pension request</text>
+  <text x="120" y="1530" class="foot">3) Book healthcare appointment (telehealth)</text>
+  <text x="120" y="1580" class="foot">4) Apply for a job and open community forum</text>
+  <text x="120" y="1630" class="foot">5) End with feedback + profile security settings</text>
+
+  <text x="80" y="1830" class="foot">Live demo: https://aegis-5cc9.onrender.com</text>
+</svg>

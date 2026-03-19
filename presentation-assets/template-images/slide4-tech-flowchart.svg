@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bgTF" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef4fa"/>
+      <stop offset="100%" stop-color="#dde9f5"/>
+    </linearGradient>
+    <marker id="arrTF" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#2e7dbb"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bgTF)"/>
+  <text x="80" y="95" fill="#10375c" font-family="Arial, sans-serif" font-size="58" font-weight="700">Tech Used &amp; Flowchart</text>
+
+  <rect x="80" y="150" width="550" height="690" rx="24" fill="#ffffff" stroke="#c5d7ea" stroke-width="3"/>
+  <text x="120" y="225" fill="#0e3f6a" font-family="Arial, sans-serif" font-size="40" font-weight="700">Technology Stack</text>
+  <text x="120" y="295" fill="#3d5e7c" font-family="Arial, sans-serif" font-size="30" font-weight="500">• React (Vite), React Router</text>
+  <text x="120" y="345" fill="#3d5e7c" font-family="Arial, sans-serif" font-size="30" font-weight="500">• Node.js + Express</text>
+  <text x="120" y="395" fill="#3d5e7c" font-family="Arial, sans-serif" font-size="30" font-weight="500">• JWT + bcrypt + optional 2FA</text>
+  <text x="120" y="445" fill="#3d5e7c" font-family="Arial, sans-serif" font-size="30" font-weight="500">• JSON data store (prototype)</text>
+  <text x="120" y="495" fill="#3d5e7c" font-family="Arial, sans-serif" font-size="30" font-weight="500">• Render deployment</text>
+
+  <rect x="700" y="180" width="220" height="110" rx="18" fill="#f6fbff" stroke="#bdd4e8" stroke-width="3"/>
+  <text x="755" y="247" fill="#0d3e68" font-family="Arial, sans-serif" font-size="33" font-weight="700">User</text>
+
+  <rect x="980" y="180" width="260" height="110" rx="18" fill="#f6fbff" stroke="#bdd4e8" stroke-width="3"/>
+  <text x="1035" y="247" fill="#0d3e68" font-family="Arial, sans-serif" font-size="33" font-weight="700">Frontend</text>
+
+  <rect x="1300" y="180" width="240" height="110" rx="18" fill="#f6fbff" stroke="#bdd4e8" stroke-width="3"/>
+  <text x="1368" y="247" fill="#0d3e68" font-family="Arial, sans-serif" font-size="33" font-weight="700">API</text>
+
+  <rect x="980" y="360" width="260" height="110" rx="18" fill="#f6fbff" stroke="#bdd4e8" stroke-width="3"/>
+  <text x="1010" y="427" fill="#0d3e68" font-family="Arial, sans-serif" font-size="33" font-weight="700">Business Logic</text>
+
+  <rect x="1300" y="360" width="240" height="110" rx="18" fill="#f6fbff" stroke="#bdd4e8" stroke-width="3"/>
+  <text x="1342" y="427" fill="#0d3e68" font-family="Arial, sans-serif" font-size="33" font-weight="700">Data Store</text>
+
+  <rect x="980" y="520" width="560" height="240" rx="20" fill="#e9f6ed" stroke="#b5dec1" stroke-width="3"/>
+  <text x="1018" y="610" fill="#11562f" font-family="Arial, sans-serif" font-size="35" font-weight="700">Modules via API</text>
+  <text x="1018" y="650" fill="#2f6d49" font-family="Arial, sans-serif" font-size="27" font-weight="500">Pension | Healthcare | Career</text>
+  <text x="1018" y="688" fill="#2f6d49" font-family="Arial, sans-serif" font-size="27" font-weight="500">Community | Resources | Notifications</text>
+  <text x="1018" y="720" fill="#2f6d49" font-family="Arial, sans-serif" font-size="27" font-weight="500">Feedback | Profile</text>
+
+  <line x1="920" y1="235" x2="980" y2="235" stroke="#2e7dbb" stroke-width="5" marker-end="url(#arrTF)"/>
+  <line x1="1240" y1="235" x2="1300" y2="235" stroke="#2e7dbb" stroke-width="5" marker-end="url(#arrTF)"/>
+  <line x1="1110" y1="290" x2="1110" y2="360" stroke="#2e7dbb" stroke-width="5" marker-end="url(#arrTF)"/>
+  <line x1="1420" y1="290" x2="1420" y2="360" stroke="#2e7dbb" stroke-width="5" marker-end="url(#arrTF)"/>
+  <line x1="1110" y1="470" x2="1110" y2="540" stroke="#2e7dbb" stroke-width="5" marker-end="url(#arrTF)"/>
+  <line x1="1420" y1="470" x2="1420" y2="540" stroke="#2e7dbb" stroke-width="5" marker-end="url(#arrTF)"/>
+</svg>

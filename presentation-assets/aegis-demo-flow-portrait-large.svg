@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bgV" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1d35"/>
+      <stop offset="100%" stop-color="#1d3f68"/>
+    </linearGradient>
+    <marker id="arrV" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto">
+      <path d="M0,0 L14,7 L0,14 z" fill="#79d7ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#bgV)"/>
+
+  <text x="70" y="90" fill="#ffffff" font-family="Arial, sans-serif" font-size="58" font-weight="700">AEGIS Demo Flow</text>
+  <text x="70" y="140" fill="#cfe7ff" font-family="Arial, sans-serif" font-size="31" font-weight="500">High-visibility judge presentation sequence (3-4 min)</text>
+
+  <rect x="70" y="195" width="940" height="168" rx="24" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="105" y="265" fill="#0f3b63" font-family="Arial, sans-serif" font-size="44" font-weight="700">1. Login</text>
+  <text x="105" y="315" fill="#375a7a" font-family="Arial, sans-serif" font-size="34" font-weight="500">AEGIS branded secure login</text>
+
+  <rect x="70" y="420" width="940" height="168" rx="24" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="105" y="490" fill="#0f3b63" font-family="Arial, sans-serif" font-size="44" font-weight="700">2. Dashboard</text>
+  <text x="105" y="540" fill="#375a7a" font-family="Arial, sans-serif" font-size="34" font-weight="500">Show quick user metrics and overview</text>
+
+  <rect x="70" y="645" width="940" height="168" rx="24" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="105" y="715" fill="#0f3b63" font-family="Arial, sans-serif" font-size="44" font-weight="700">3. Pension</text>
+  <text x="105" y="765" fill="#375a7a" font-family="Arial, sans-serif" font-size="34" font-weight="500">Add expense and submit pension request</text>
+
+  <rect x="70" y="870" width="940" height="168" rx="24" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="105" y="940" fill="#0f3b63" font-family="Arial, sans-serif" font-size="44" font-weight="700">4. Healthcare</text>
+  <text x="105" y="990" fill="#375a7a" font-family="Arial, sans-serif" font-size="34" font-weight="500">Book appointment (telehealth option)</text>
+
+  <rect x="70" y="1095" width="940" height="168" rx="24" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="105" y="1165" fill="#0f3b63" font-family="Arial, sans-serif" font-size="44" font-weight="700">5. Career</text>
+  <text x="105" y="1215" fill="#375a7a" font-family="Arial, sans-serif" font-size="34" font-weight="500">Show job board and workshop support</text>
+
+  <rect x="70" y="1320" width="940" height="168" rx="24" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="105" y="1390" fill="#0f3b63" font-family="Arial, sans-serif" font-size="44" font-weight="700">6. Community + Feedback</text>
+  <text x="105" y="1440" fill="#375a7a" font-family="Arial, sans-serif" font-size="34" font-weight="500">Post in forum and submit suggestion</text>
+
+  <rect x="70" y="1545" width="940" height="168" rx="24" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="105" y="1615" fill="#0f3b63" font-family="Arial, sans-serif" font-size="44" font-weight="700">7. Profile + 2FA</text>
+  <text x="105" y="1665" fill="#375a7a" font-family="Arial, sans-serif" font-size="34" font-weight="500">End with accessibility and security settings</text>
+
+  <line x1="540" y1="363" x2="540" y2="420" stroke="#79d7ff" stroke-width="6" marker-end="url(#arrV)"/>
+  <line x1="540" y1="588" x2="540" y2="645" stroke="#79d7ff" stroke-width="6" marker-end="url(#arrV)"/>
+  <line x1="540" y1="813" x2="540" y2="870" stroke="#79d7ff" stroke-width="6" marker-end="url(#arrV)"/>
+  <line x1="540" y1="1038" x2="540" y2="1095" stroke="#79d7ff" stroke-width="6" marker-end="url(#arrV)"/>
+  <line x1="540" y1="1263" x2="540" y2="1320" stroke="#79d7ff" stroke-width="6" marker-end="url(#arrV)"/>
+  <line x1="540" y1="1488" x2="540" y2="1545" stroke="#79d7ff" stroke-width="6" marker-end="url(#arrV)"/>
+
+  <text x="70" y="1868" fill="#d7ebff" font-family="Arial, sans-serif" font-size="28" font-weight="500">Live demo: https://aegis-5cc9.onrender.com</text>
+</svg>

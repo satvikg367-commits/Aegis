@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1b2b"/>
+      <stop offset="100%" stop-color="#123c61"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 54px Arial, sans-serif; fill: #ffffff; }
+      .sub { font: 400 24px Arial, sans-serif; fill: #d6e4f2; }
+      .boxTitle { font: 700 26px Arial, sans-serif; fill: #0b1b2b; }
+      .boxBody { font: 500 20px Arial, sans-serif; fill: #1c3347; }
+      .foot { font: 500 18px Arial, sans-serif; fill: #b8cce0; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ffd166"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <text x="80" y="90" class="title">AEGIS Portal - System Architecture</text>
+  <text x="80" y="130" class="sub">Retired Defence Officers Digital Platform</text>
+
+  <rect x="100" y="220" width="320" height="180" rx="20" fill="#f2f7fb"/>
+  <text x="140" y="280" class="boxTitle">Users</text>
+  <text x="140" y="325" class="boxBody">Retired officers</text>
+  <text x="140" y="355" class="boxBody">Family members</text>
+
+  <rect x="500" y="180" width="380" height="260" rx="20" fill="#e7f3ff"/>
+  <text x="545" y="240" class="boxTitle">Frontend</text>
+  <text x="545" y="285" class="boxBody">React + Vite</text>
+  <text x="545" y="315" class="boxBody">Login, Dashboard, Modules</text>
+  <text x="545" y="345" class="boxBody">Accessibility controls</text>
+  <text x="545" y="375" class="boxBody">Hosted on Render Static Site</text>
+
+  <rect x="980" y="180" width="420" height="260" rx="20" fill="#fff4d9"/>
+  <text x="1025" y="240" class="boxTitle">Backend API</text>
+  <text x="1025" y="285" class="boxBody">Node.js + Express</text>
+  <text x="1025" y="315" class="boxBody">JWT auth + bcrypt + optional 2FA</text>
+  <text x="1025" y="345" class="boxBody">REST routes for all modules</text>
+  <text x="1025" y="375" class="boxBody">Hosted on Render Web Service</text>
+
+  <rect x="500" y="520" width="900" height="250" rx="20" fill="#e9f8ef"/>
+  <text x="540" y="580" class="boxTitle">Domain Modules + Data Layer</text>
+  <text x="540" y="625" class="boxBody">Pension (payments, requests, expenses)</text>
+  <text x="540" y="655" class="boxBody">Healthcare (providers, appointments, telehealth, claims)</text>
+  <text x="540" y="685" class="boxBody">Career, Community Forum, Notifications, Resources, Feedback, Profile</text>
+  <text x="540" y="715" class="boxBody">JSON data store for hackathon prototype</text>
+
+  <line x1="420" y1="310" x2="500" y2="310" stroke="#ffd166" stroke-width="5" marker-end="url(#arrow)"/>
+  <line x1="880" y1="310" x2="980" y2="310" stroke="#ffd166" stroke-width="5" marker-end="url(#arrow)"/>
+  <line x1="1190" y1="440" x2="1190" y2="520" stroke="#ffd166" stroke-width="5" marker-end="url(#arrow)"/>
+
+  <text x="80" y="850" class="foot">Live deployment: frontend and backend are deployed separately on Render with CORS + env configuration.</text>
+</svg>

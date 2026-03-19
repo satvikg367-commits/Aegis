@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bgPS" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f3f7fb"/>
+      <stop offset="100%" stop-color="#e4edf7"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bgPS)"/>
+
+  <text x="80" y="95" fill="#0e3356" font-family="Arial, sans-serif" font-size="58" font-weight="700">Problem Statement &amp; Proposed Solution</text>
+
+  <rect x="80" y="160" width="690" height="660" rx="24" fill="#fff4f4" stroke="#efc0c0" stroke-width="3"/>
+  <text x="120" y="230" fill="#8a1f1f" font-family="Arial, sans-serif" font-size="44" font-weight="700">Problem</text>
+  <text x="120" y="300" fill="#7b3a3a" font-family="Arial, sans-serif" font-size="31" font-weight="500">• Fragmented services for pension,</text>
+  <text x="120" y="350" fill="#7b3a3a" font-family="Arial, sans-serif" font-size="31" font-weight="500">  healthcare, and employment.</text>
+  <text x="120" y="410" fill="#7b3a3a" font-family="Arial, sans-serif" font-size="31" font-weight="500">• Retired officers face delays and</text>
+  <text x="120" y="460" fill="#7b3a3a" font-family="Arial, sans-serif" font-size="31" font-weight="500">  low transparency in support systems.</text>
+  <text x="120" y="520" fill="#7b3a3a" font-family="Arial, sans-serif" font-size="31" font-weight="500">• No single trusted platform for</text>
+  <text x="120" y="570" fill="#7b3a3a" font-family="Arial, sans-serif" font-size="31" font-weight="500">  retirement lifecycle management.</text>
+
+  <rect x="830" y="160" width="690" height="660" rx="24" fill="#effbf3" stroke="#b9e6c6" stroke-width="3"/>
+  <text x="870" y="230" fill="#0b5a2a" font-family="Arial, sans-serif" font-size="44" font-weight="700">Solution - AEGIS</text>
+  <text x="870" y="300" fill="#2c6340" font-family="Arial, sans-serif" font-size="31" font-weight="500">• Centralized secure web portal.</text>
+  <text x="870" y="360" fill="#2c6340" font-family="Arial, sans-serif" font-size="31" font-weight="500">• Pension tracking + expense manager.</text>
+  <text x="870" y="420" fill="#2c6340" font-family="Arial, sans-serif" font-size="31" font-weight="500">• Healthcare booking + telehealth + claims.</text>
+  <text x="870" y="480" fill="#2c6340" font-family="Arial, sans-serif" font-size="31" font-weight="500">• Career jobs + workshops + community.</text>
+  <text x="870" y="540" fill="#2c6340" font-family="Arial, sans-serif" font-size="31" font-weight="500">• Accessible, secure, and deployment-ready.</text>
+
+  <line x1="770" y1="490" x2="830" y2="490" stroke="#3f92d1" stroke-width="6"/>
+  <polygon points="830,490 810,478 810,502" fill="#3f92d1"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bgC" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a1b33"/>
+      <stop offset="100%" stop-color="#1a4470"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bgC)"/>
+
+  <rect x="90" y="120" width="1420" height="660" rx="24" fill="none" stroke="#8fc3ef" stroke-width="3"/>
+
+  <path d="M260 260 L360 260 L360 340 C360 405 315 450 310 452 C305 450 260 405 260 340 Z" fill="#7fd4ff" opacity="0.95"/>
+  <path d="M285 315 L305 335 L340 300" fill="none" stroke="#0b3559" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="430" y="235" fill="#ffffff" font-family="Arial, sans-serif" font-size="54" font-weight="700">Problem Statement:</text>
+  <text x="430" y="300" fill="#ffffff" font-family="Arial, sans-serif" font-size="54" font-weight="700">Retired Defence Officers Portal</text>
+  <text x="430" y="380" fill="#d7e9fb" font-family="Arial, sans-serif" font-size="48" font-weight="700">Team Name: Vision Codex</text>
+  <text x="430" y="470" fill="#d7e9fb" font-family="Arial, sans-serif" font-size="48" font-weight="700">Team Leader: Satvik Gupta</text>
+  <text x="430" y="555" fill="#d7e9fb" font-family="Arial, sans-serif" font-size="40" font-weight="600">Members: Sachin Maurya, Prashant Kumar,</text>
+  <text x="430" y="605" fill="#d7e9fb" font-family="Arial, sans-serif" font-size="40" font-weight="600">Saurabh Singh</text>
+
+  <text x="430" y="655" fill="#89d6ff" font-family="Arial, sans-serif" font-size="52" font-weight="800">AEGIS</text>
+  <text x="630" y="655" fill="#cce8ff" font-family="Arial, sans-serif" font-size="38" font-weight="500">Secure support platform for veterans</text>
+</svg>

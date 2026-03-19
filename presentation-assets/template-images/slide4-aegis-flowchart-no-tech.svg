@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a1250"/>
+      <stop offset="100%" stop-color="#1e2f8a"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#1d4f7a"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <text x="78" y="92" fill="#ffffff" font-family="Arial, sans-serif" font-size="68" font-weight="700">AEGIS</text>
+  <text x="320" y="92" fill="#d6e8ff" font-family="Georgia, serif" font-size="68" font-weight="500">Flowchart</text>
+
+  <rect x="96" y="126" width="1408" height="726" rx="26" fill="none" stroke="#1fa4f2" stroke-width="12"/>
+  <rect x="120" y="168" width="1360" height="670" rx="12" fill="#eef8fc" stroke="#8ecce6" stroke-width="2"/>
+
+  <rect x="220" y="205" width="1160" height="54" rx="8" fill="#0f948b"/>
+  <text x="262" y="242" fill="#ffffff" font-family="Arial, sans-serif" font-size="44" font-weight="700">RETIRED DEFENCE OFFICERS PORTAL WORKFLOW</text>
+
+  <rect x="360" y="284" width="170" height="46" rx="12" fill="#a6e6b0" stroke="#5fa96b"/>
+  <text x="405" y="314" fill="#0d4d21" font-family="Arial, sans-serif" font-size="28" font-weight="700">START</text>
+
+  <rect x="550" y="284" width="390" height="46" rx="12" fill="#d7eafb" stroke="#8db7de"/>
+  <text x="573" y="314" fill="#12395d" font-family="Arial, sans-serif" font-size="36" font-weight="700">USER LOGIN / CREATE ACCOUNT</text>
+
+  <rect x="642" y="346" width="258" height="48" rx="12" fill="#d7eafb" stroke="#8db7de"/>
+  <text x="655" y="377" fill="#12395d" font-family="Arial, sans-serif" font-size="24" font-weight="700">PROFILE SETUP (ID, RANK, LOCATION)</text>
+
+  <line x1="530" y1="307" x2="550" y2="307" stroke="#1d4f7a" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="770" y1="330" x2="770" y2="346" stroke="#1d4f7a" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="170" y="422" width="360" height="48" rx="14" fill="#d0f2ff" stroke="#95d2ea"/>
+  <text x="190" y="454" fill="#0d4a66" font-family="Arial, sans-serif" font-size="25" font-weight="700">TRACK PENSION SERVICES</text>
+
+  <rect x="620" y="422" width="360" height="48" rx="14" fill="#d0f2ff" stroke="#95d2ea"/>
+  <text x="640" y="454" fill="#0d4a66" font-family="Arial, sans-serif" font-size="25" font-weight="700">TRACK HEALTHCARE SERVICES</text>
+
+  <rect x="1060" y="422" width="360" height="48" rx="14" fill="#d0f2ff" stroke="#95d2ea"/>
+  <text x="1080" y="454" fill="#0d4a66" font-family="Arial, sans-serif" font-size="25" font-weight="700">CAREER &amp; COMMUNITY ACTIVITY</text>
+
+  <rect x="165" y="490" width="160" height="82" rx="14" fill="#cfe7fa" stroke="#8db7de"/>
+  <text x="180" y="524" fill="#133f66" font-family="Arial, sans-serif" font-size="20" font-weight="700">VIEW PENSION</text>
+  <text x="180" y="550" fill="#133f66" font-family="Arial, sans-serif" font-size="20" font-weight="700">DETAILS</text>
+
+  <text x="336" y="541" fill="#5f6f7f" font-family="Arial, sans-serif" font-size="26" font-weight="700">OR</text>
+
+  <rect x="380" y="490" width="160" height="82" rx="14" fill="#e8dcf8" stroke="#b7a1d8"/>
+  <text x="394" y="524" fill="#4f3d70" font-family="Arial, sans-serif" font-size="20" font-weight="700">ADD EXPENSE</text>
+  <text x="394" y="550" fill="#4f3d70" font-family="Arial, sans-serif" font-size="20" font-weight="700">ENTRY</text>
+
+  <rect x="225" y="590" width="300" height="46" rx="12" fill="#d7eafb" stroke="#8db7de"/>
+  <text x="240" y="620" fill="#12395d" font-family="Arial, sans-serif" font-size="21" font-weight="700">PENSION REQUEST / UPDATE</text>
+
+  <rect x="615" y="490" width="370" height="52" rx="14" fill="#e8dcf8" stroke="#b7a1d8"/>
+  <text x="632" y="523" fill="#4f3d70" font-family="Arial, sans-serif" font-size="21" font-weight="700">BOOK APPOINTMENT / TELEHEALTH</text>
+
+  <rect x="680" y="558" width="240" height="44" rx="12" fill="#cfe7fa" stroke="#8db7de"/>
+  <text x="698" y="587" fill="#133f66" font-family="Arial, sans-serif" font-size="21" font-weight="700">ACTIVE APPOINTMENTS</text>
+
+  <rect x="650" y="616" width="300" height="44" rx="12" fill="#d6f4e1" stroke="#9ad3b2"/>
+  <text x="668" y="645" fill="#1a5a37" font-family="Arial, sans-serif" font-size="21" font-weight="700">BENEFIT + CLAIMS DATA</text>
+
+  <rect x="1030" y="490" width="360" height="82" rx="14" fill="#e8dcf8" stroke="#b7a1d8"/>
+  <text x="1048" y="523" fill="#4f3d70" font-family="Arial, sans-serif" font-size="20" font-weight="700">BROWSE JOBS / WORKSHOPS</text>
+  <text x="1048" y="550" fill="#4f3d70" font-family="Arial, sans-serif" font-size="20" font-weight="700">JOIN FORUM DISCUSSIONS</text>
+
+  <rect x="1080" y="590" width="260" height="46" rx="12" fill="#d7eafb" stroke="#8db7de"/>
+  <text x="1100" y="620" fill="#12395d" font-family="Arial, sans-serif" font-size="21" font-weight="700">ACTIVITY DATA</text>
+
+  <rect x="530" y="676" width="430" height="54" rx="14" fill="#9ce7b2" stroke="#5fa96b"/>
+  <text x="558" y="710" fill="#115226" font-family="Arial, sans-serif" font-size="22" font-weight="700">SERVICE COORDINATION ENGINE</text>
+
+  <rect x="980" y="668" width="390" height="72" rx="14" fill="#cfe7fa" stroke="#8db7de"/>
+  <text x="998" y="697" fill="#133f66" font-family="Arial, sans-serif" font-size="22" font-weight="700">PERSONALIZED SUPPORT ENGINE</text>
+  <text x="998" y="723" fill="#133f66" font-family="Arial, sans-serif" font-size="18" font-weight="700">High / Medium / Routine Alerts</text>
+
+  <rect x="330" y="760" width="940" height="56" rx="12" fill="#dbeaf5" stroke="#9dbcd6"/>
+  <text x="350" y="796" fill="#274a68" font-family="Arial, sans-serif" font-size="21" font-weight="700">USER DASHBOARD, REQUEST STATUS, NOTIFICATIONS, ACTIVITY TIMELINE</text>
+
+  <line x1="770" y1="394" x2="350" y2="422" stroke="#1d4f7a" stroke-width="3"/>
+  <line x1="770" y1="394" x2="800" y2="422" stroke="#1d4f7a" stroke-width="3"/>
+  <line x1="770" y1="394" x2="1240" y2="422" stroke="#1d4f7a" stroke-width="3"/>
+
+  <line x1="245" y1="572" x2="375" y2="590" stroke="#1d4f7a" stroke-width="3"/>
+  <line x1="460" y1="572" x2="375" y2="590" stroke="#1d4f7a" stroke-width="3"/>
+  <line x1="375" y1="636" x2="530" y2="676" stroke="#1d4f7a" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <line x1="800" y1="542" x2="800" y2="558" stroke="#1d4f7a" stroke-width="3"/>
+  <line x1="800" y1="602" x2="800" y2="616" stroke="#1d4f7a" stroke-width="3"/>
+  <line x1="800" y1="660" x2="800" y2="676" stroke="#1d4f7a" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <line x1="1210" y1="572" x2="1210" y2="590" stroke="#1d4f7a" stroke-width="3"/>
+  <line x1="1210" y1="636" x2="1120" y2="668" stroke="#1d4f7a" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="960" y1="703" x2="980" y2="703" stroke="#1d4f7a" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <line x1="745" y1="730" x2="745" y2="760" stroke="#1d4f7a" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1175" y1="740" x2="1175" y2="760" stroke="#1d4f7a" stroke-width="3" marker-end="url(#arrow)"/>
+</svg>

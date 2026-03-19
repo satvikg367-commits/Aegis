@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 const appRoot = path.resolve(__dirname);
+const devBackendTarget = process.env.VITE_DEV_BACKEND_TARGET || "http://127.0.0.1:4000";
 
 export default defineConfig({
   root: appRoot,
@@ -13,6 +14,13 @@ export default defineConfig({
     fs: {
       strict: true,
       allow: [appRoot]
+    },
+    proxy: {
+      "/api": {
+        target: devBackendTarget,
+        changeOrigin: true,
+        secure: false
+      }
     },
     watch: {
       ignored: (filePath) => !filePath.startsWith(appRoot)

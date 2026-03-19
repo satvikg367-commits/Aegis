@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bgMI" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1f38"/>
+      <stop offset="100%" stop-color="#153f69"/>
+    </linearGradient>
+    <marker id="arrMI" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#79d7ff"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bgMI)"/>
+
+  <text x="80" y="95" fill="#ffffff" font-family="Arial, sans-serif" font-size="58" font-weight="700">Methodology &amp; Implementation</text>
+  <text x="80" y="140" fill="#c6ddf5" font-family="Arial, sans-serif" font-size="30" font-weight="500">Human-centered, module-first execution</text>
+
+  <rect x="80" y="220" width="260" height="200" rx="20" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="108" y="280" fill="#0c3d68" font-family="Arial, sans-serif" font-size="34" font-weight="700">1. Scope</text>
+  <text x="108" y="335" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">Mapped users</text>
+  <text x="108" y="372" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">and modules</text>
+
+  <rect x="390" y="220" width="260" height="200" rx="20" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="418" y="280" fill="#0c3d68" font-family="Arial, sans-serif" font-size="34" font-weight="700">2. Design</text>
+  <text x="418" y="335" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">React + Node</text>
+  <text x="418" y="372" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">architecture</text>
+
+  <rect x="700" y="220" width="260" height="200" rx="20" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="728" y="280" fill="#0c3d68" font-family="Arial, sans-serif" font-size="34" font-weight="700">3. Build</text>
+  <text x="728" y="335" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">Auth, Pension,</text>
+  <text x="728" y="372" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">Healthcare...</text>
+
+  <rect x="1010" y="220" width="260" height="200" rx="20" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="1038" y="280" fill="#0c3d68" font-family="Arial, sans-serif" font-size="34" font-weight="700">4. Test</text>
+  <text x="1038" y="335" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">User-flow</text>
+  <text x="1038" y="372" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">validation</text>
+
+  <rect x="1260" y="500" width="260" height="200" rx="20" fill="#f7fbff" stroke="#cde0f2" stroke-width="3"/>
+  <text x="1288" y="560" fill="#0c3d68" font-family="Arial, sans-serif" font-size="34" font-weight="700">5. Deploy</text>
+  <text x="1288" y="615" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">Render live</text>
+  <text x="1288" y="652" fill="#3b5f7f" font-family="Arial, sans-serif" font-size="26" font-weight="500">frontend/backend</text>
+
+  <line x1="340" y1="320" x2="390" y2="320" stroke="#79d7ff" stroke-width="5" marker-end="url(#arrMI)"/>
+  <line x1="650" y1="320" x2="700" y2="320" stroke="#79d7ff" stroke-width="5" marker-end="url(#arrMI)"/>
+  <line x1="960" y1="320" x2="1010" y2="320" stroke="#79d7ff" stroke-width="5" marker-end="url(#arrMI)"/>
+  <line x1="1270" y1="420" x2="1320" y2="500" stroke="#79d7ff" stroke-width="5" marker-end="url(#arrMI)"/>
+
+  <rect x="80" y="510" width="1120" height="250" rx="24" fill="#113a60" stroke="#2b577f" stroke-width="2"/>
+  <text x="120" y="575" fill="#ffffff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Implementation Highlights</text>
+  <text x="120" y="630" fill="#d8e8f8" font-family="Arial, sans-serif" font-size="28" font-weight="500">• Secure login, profile, and optional 2FA</text>
+  <text x="120" y="675" fill="#d8e8f8" font-family="Arial, sans-serif" font-size="28" font-weight="500">• Pension tracking + expense manager + request status</text>
+  <text x="120" y="720" fill="#d8e8f8" font-family="Arial, sans-serif" font-size="28" font-weight="500">• Healthcare, career, community, notifications, feedback</text>
+</svg>

@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiRequest } from "../api/client";
+
+const ThreeScene = lazy(() => import("../components/ThreeScene"));
 
 export default function RecoverPage() {
   const [email, setEmail] = useState("");
@@ -42,40 +44,45 @@ export default function RecoverPage() {
   };
 
   return (
-    <div className="auth-card">
-      <h1>Password Recovery</h1>
-      {error && <div className="alert error">{error}</div>}
-      {message && <div className="alert success">{message}</div>}
+    <div className="login-stage auth-stage">
+      <Suspense fallback={null}>
+        <ThreeScene mode="ambient" className="auth-three-scene" />
+      </Suspense>
+      <div className="auth-card">
+        <h1>Password Recovery</h1>
+        {error && <div className="alert error">{error}</div>}
+        {message && <div className="alert success">{message}</div>}
 
-      <h2>Generate Reset Token</h2>
-      <form className="form-grid" onSubmit={onForgot}>
-        <label>
-          Registered Email
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </label>
-        <button type="submit">Generate Token</button>
-      </form>
+        <h2>Generate Reset Token</h2>
+        <form className="form-grid" onSubmit={onForgot}>
+          <label>
+            Registered Email
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </label>
+          <button type="submit">Generate Token</button>
+        </form>
 
-      {generatedToken && (
-        <div className="alert warning">
-          Development token: <code>{generatedToken}</code>
-        </div>
-      )}
+        {generatedToken && (
+          <div className="alert warning">
+            Development token: <code>{generatedToken}</code>
+          </div>
+        )}
 
-      <h2>Set New Password</h2>
-      <form className="form-grid" onSubmit={onReset}>
-        <label>
-          Reset Token
-          <input value={token} onChange={(e) => setToken(e.target.value)} required />
-        </label>
-        <label>
-          New Password
-          <input type="password" minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
-        </label>
-        <button type="submit">Reset Password</button>
-      </form>
+        <h2>Set New Password</h2>
+        <form className="form-grid" onSubmit={onReset}>
+          <label>
+            Reset Token
+            <input value={token} onChange={(e) => setToken(e.target.value)} required />
+          </label>
+          <label>
+            New Password
+            <input type="password" minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+          </label>
+          <button type="submit">Reset Password</button>
+        </form>
 
-      <div className="auth-links"><Link to="/login">Back to login</Link></div>
+        <div className="auth-links"><Link to="/login">Back to login</Link></div>
+      </div>
     </div>
   );
 }

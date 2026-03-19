@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+
+const ThreeScene = lazy(() => import("../components/ThreeScene"));
 
 export default function DashboardPage() {
   const { token, user } = useAuth();
@@ -18,9 +20,26 @@ export default function DashboardPage() {
 
   return (
     <>
-      <section>
-        <h1>Welcome, {user?.fullName}</h1>
-        <p className="subtle">Your central dashboard for pension, healthcare, career, and community updates.</p>
+      <section className="dashboard-hero">
+        <div className="dashboard-hero-copy">
+          <h1>Welcome, {user?.fullName}</h1>
+          <p className="subtle">Your central dashboard for pension, healthcare, career, and community updates.</p>
+          <div className="hero-badges">
+            <span className="hero-badge">Active Requests: {data.activeRequests}</span>
+            <span className="hero-badge">Unread Alerts: {data.unreadNotifications}</span>
+            <span className="hero-badge">Upcoming Appointments: {data.upcomingAppointments.length}</span>
+            <span className="hero-badge">Job Leads: {data.recommendedJobs.length}</span>
+          </div>
+        </div>
+        <div className="dashboard-hero-visual">
+          <Suspense fallback={<div className="dashboard-three-fallback" aria-hidden="true" />}>
+            <ThreeScene mode="hero" className="dashboard-three-scene" />
+          </Suspense>
+          <div className="hero-core hero-core-overlay">
+            <strong>AEGIS</strong>
+            <span>Mission Ready</span>
+          </div>
+        </div>
       </section>
 
       <section className="grid cards-4">

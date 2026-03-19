@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f9fc"/>
+      <stop offset="100%" stop-color="#e6eef7"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 52px Arial, sans-serif; fill: #0d2d4d; }
+      .sub { font: 400 24px Arial, sans-serif; fill: #35526f; }
+      .card { fill: #ffffff; stroke: #cbd9e8; stroke-width: 2; }
+      .h { font: 700 26px Arial, sans-serif; fill: #0b3b66; }
+      .b { font: 500 20px Arial, sans-serif; fill: #324f6a; }
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg2)"/>
+  <text x="80" y="90" class="title">AEGIS Portal - Feature Modules</text>
+  <text x="80" y="130" class="sub">Single-window platform for post-retirement support</text>
+
+  <rect x="90" y="190" width="450" height="190" rx="18" class="card"/>
+  <text x="120" y="245" class="h">1) Account &amp; Security</text>
+  <text x="120" y="290" class="b">Register, login, password recovery</text>
+  <text x="120" y="325" class="b">Profile settings + optional 2FA</text>
+
+  <rect x="575" y="190" width="450" height="190" rx="18" class="card"/>
+  <text x="605" y="245" class="h">2) Pension Management</text>
+  <text x="605" y="290" class="b">Payments, requests, status tracking</text>
+  <text x="605" y="325" class="b">Expense manager for pension usage</text>
+
+  <rect x="1060" y="190" width="450" height="190" rx="18" class="card"/>
+  <text x="1090" y="245" class="h">3) Healthcare Services</text>
+  <text x="1090" y="290" class="b">Provider directory + appointments</text>
+  <text x="1090" y="325" class="b">Telehealth + claims submission</text>
+
+  <rect x="90" y="420" width="450" height="190" rx="18" class="card"/>
+  <text x="120" y="475" class="h">4) Career Transition</text>
+  <text x="120" y="520" class="b">Job board + applications</text>
+  <text x="120" y="555" class="b">Resume + workshops/webinars</text>
+
+  <rect x="575" y="420" width="450" height="190" rx="18" class="card"/>
+  <text x="605" y="475" class="h">5) Community &amp; Support</text>
+  <text x="605" y="520" class="b">Forum discussions + replies</text>
+  <text x="605" y="555" class="b">Resources + feedback tickets</text>
+
+  <rect x="1060" y="420" width="450" height="190" rx="18" class="card"/>
+  <text x="1090" y="475" class="h">6) Smart Experience</text>
+  <text x="1090" y="520" class="b">Notifications and alerts</text>
+  <text x="1090" y="555" class="b">Accessibility controls</text>
+
+  <rect x="90" y="660" width="1420" height="160" rx="18" fill="#0f2e4f"/>
+  <text x="130" y="725" style="font: 700 30px Arial, sans-serif; fill: #ffffff;">USP: One secure integrated command-center for retired defence officers</text>
+  <text x="130" y="770" style="font: 500 24px Arial, sans-serif; fill: #d6e5f5;">Pension + Healthcare + Career + Community in one portal (AEGIS)</text>
+</svg>

@@ -79,7 +79,35 @@ export function createSeedDatabase() {
     };
   });
 
-  const pensionRequests = [];
+  const pensionRequests = [
+    {
+      id: 1,
+      userId: 1,
+      requestType: "Life Certificate Issue",
+      details: "Need verification for delayed update in pension disbursal records.",
+      status: "Under Review",
+      createdAt: isoDaysFromNow(-11),
+      updatedAt: isoDaysFromNow(-6)
+    },
+    {
+      id: 2,
+      userId: 1,
+      requestType: "Bank Account Update",
+      details: "Primary bank branch migrated. Requesting account update confirmation.",
+      status: "Submitted",
+      createdAt: isoDaysFromNow(-4),
+      updatedAt: isoDaysFromNow(-4)
+    },
+    {
+      id: 3,
+      userId: 1,
+      requestType: "Nominee Correction",
+      details: "Nominee relationship metadata corrected and supporting document uploaded.",
+      status: "Approved",
+      createdAt: isoDaysFromNow(-26),
+      updatedAt: isoDaysFromNow(-20)
+    }
+  ];
 
   const pensionExpenses = [
     {
@@ -144,9 +172,49 @@ export function createSeedDatabase() {
     }
   ];
 
-  const appointments = [];
+  const appointments = [
+    {
+      id: 1,
+      userId: 1,
+      providerId: 1,
+      appointmentTime: isoDaysFromNow(3),
+      status: "Booked",
+      isTelehealth: true,
+      meetingLink: "https://telehealth.example.org/session/1-1",
+      note: "Follow-up for blood pressure and routine review."
+    },
+    {
+      id: 2,
+      userId: 1,
+      providerId: 3,
+      appointmentTime: isoDaysFromNow(-5),
+      status: "Completed",
+      isTelehealth: false,
+      meetingLink: "",
+      note: "Orthopedic consultation completed successfully."
+    }
+  ];
 
-  const healthcareClaims = [];
+  const healthcareClaims = [
+    {
+      id: 1,
+      userId: 1,
+      claimType: "Medicine",
+      amount: 3200,
+      status: "Under Review",
+      remarks: "Prescription and invoice attached.",
+      submittedAt: isoDaysFromNow(-6)
+    },
+    {
+      id: 2,
+      userId: 1,
+      claimType: "Consultation",
+      amount: 1800,
+      status: "Approved",
+      remarks: "Processed under veteran coverage plan.",
+      submittedAt: isoDaysFromNow(-19)
+    }
+  ];
 
   const jobPostings = [
     {
@@ -184,8 +252,32 @@ export function createSeedDatabase() {
     }
   ];
 
-  const resumes = [];
-  const jobApplications = [];
+  const resumes = [
+    {
+      id: 1,
+      userId: 1,
+      summary: "Retired defence officer with 24+ years of operational and leadership command experience.",
+      skills: "Security operations, compliance, team leadership, crisis response, training",
+      experience: "Led multi-unit operations, logistics coordination, and inter-agency security drills.",
+      updatedAt: isoDaysFromNow(-2)
+    }
+  ];
+  const jobApplications = [
+    {
+      id: 1,
+      userId: 1,
+      jobId: 1,
+      status: "Interview Scheduled",
+      appliedAt: isoDaysFromNow(-5)
+    },
+    {
+      id: 2,
+      userId: 1,
+      jobId: 2,
+      status: "Applied",
+      appliedAt: isoDaysFromNow(-2)
+    }
+  ];
 
   const workshops = [
     {
@@ -206,8 +298,54 @@ export function createSeedDatabase() {
     }
   ];
 
-  const forumPosts = [];
-  const forumReplies = [];
+  const forumPosts = [
+    {
+      id: 1,
+      userId: 1,
+      title: "Tips for managing monthly pension expenses",
+      content: "Sharing a budgeting template that helped me track fixed vs variable costs each month.",
+      category: "Pension",
+      isFlagged: false,
+      isLocked: false,
+      createdAt: isoDaysFromNow(-7)
+    },
+    {
+      id: 2,
+      userId: 2,
+      title: "Healthcare claim processing time experiences",
+      content: "Please share your average claim turnaround and any document checklist suggestions.",
+      category: "Healthcare",
+      isFlagged: false,
+      isLocked: false,
+      createdAt: isoDaysFromNow(-3)
+    }
+  ];
+  const forumReplies = [
+    {
+      id: 1,
+      postId: 1,
+      userId: 2,
+      content: "Great approach. I also split expenses into essentials and discretionary categories.",
+      isFlagged: false,
+      createdAt: isoDaysFromNow(-6)
+    },
+    {
+      id: 2,
+      postId: 1,
+      userId: 1,
+      content: "Thanks. Happy to share the spreadsheet format in the next post.",
+      isFlagged: false,
+      createdAt: isoDaysFromNow(-5)
+    },
+    {
+      id: 3,
+      postId: 2,
+      userId: 1,
+      content: "My last claim was approved in 8 days after uploading complete prescriptions and bills.",
+      isFlagged: false,
+      createdAt: isoDaysFromNow(-2)
+    }
+  ];
 
   const resourceItems = [
     {
@@ -239,8 +377,72 @@ export function createSeedDatabase() {
     }
   ];
 
-  const notifications = [];
-  const feedbackTickets = [];
+  const notifications = [
+    {
+      id: 1,
+      userId: 1,
+      category: "Pension",
+      title: "Upcoming pension credit",
+      message: "Your pension is expected to be credited in 2 days.",
+      isRead: false,
+      createdAt: isoDaysFromNow(-1)
+    },
+    {
+      id: 2,
+      userId: 1,
+      category: "Career",
+      title: "New matching job role",
+      message: "Security Operations Manager role matches your profile at 86%.",
+      isRead: false,
+      createdAt: isoDaysFromNow(-1)
+    },
+    {
+      id: 3,
+      userId: 1,
+      category: "Healthcare",
+      title: "Appointment reminder",
+      message: "Telehealth appointment is scheduled for the next 3 days.",
+      isRead: false,
+      createdAt: nowIso()
+    },
+    {
+      id: 4,
+      userId: 1,
+      category: "Community",
+      title: "New forum reply",
+      message: "A new reply was posted on your pension budgeting discussion.",
+      isRead: true,
+      createdAt: isoDaysFromNow(-4)
+    },
+    {
+      id: 5,
+      userId: 1,
+      category: "Pension",
+      title: "Request update",
+      message: "Nominee correction request has been approved.",
+      isRead: true,
+      createdAt: isoDaysFromNow(-9)
+    },
+    {
+      id: 6,
+      userId: 1,
+      category: "Healthcare",
+      title: "Claim status changed",
+      message: "Consultation claim #2 was approved.",
+      isRead: true,
+      createdAt: isoDaysFromNow(-18)
+    }
+  ];
+  const feedbackTickets = [
+    {
+      id: 1,
+      userId: 1,
+      category: "Suggestion",
+      message: "Please add downloadable monthly pension expense reports.",
+      status: "In Review",
+      createdAt: isoDaysFromNow(-8)
+    }
+  ];
   const passwordResetTokens = [];
 
   return {
@@ -250,20 +452,20 @@ export function createSeedDatabase() {
         users: 3,
         pensionProfiles: 2,
         pensionPayments: 7,
-        pensionRequests: 1,
+        pensionRequests: 4,
         pensionExpenses: 4,
         healthcareProviders: 4,
-        appointments: 1,
-        healthcareClaims: 1,
+        appointments: 3,
+        healthcareClaims: 3,
         jobPostings: 4,
-        resumes: 1,
-        jobApplications: 1,
+        resumes: 2,
+        jobApplications: 3,
         workshops: 3,
-        forumPosts: 1,
-        forumReplies: 1,
+        forumPosts: 3,
+        forumReplies: 4,
         resourceItems: 4,
-        notifications: 1,
-        feedbackTickets: 1,
+        notifications: 7,
+        feedbackTickets: 2,
         passwordResetTokens: 1
       }
     },

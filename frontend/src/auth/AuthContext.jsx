@@ -22,11 +22,22 @@ export function AuthProvider({ children }) {
         setUser(data.user);
         localStorage.setItem("portal_user", JSON.stringify(data.user));
       })
-      .catch(() => {
-        setToken("");
-        setUser(null);
-        localStorage.removeItem("portal_token");
-        localStorage.removeItem("portal_user");
+      .catch((err) => {
+        const message = String(err?.message || "").toLowerCase();
+        const shouldInvalidateSession =
+          message.includes("invalid or expired token") ||
+          message.includes("authentication required") ||
+          message.includes("invalid account") ||
+          message.includes("request failed (401)") ||
+          message.includes("request failed (403)");
+
+        // Keep local session on transient network/proxy errors to avoid login loops.
+        if (shouldInvalidateSession) {
+          setToken("");
+          setUser(null);
+          localStorage.removeItem("portal_token");
+          localStorage.removeItem("portal_user");
+        }
       })
       .finally(() => setLoading(false));
   }, [token]);

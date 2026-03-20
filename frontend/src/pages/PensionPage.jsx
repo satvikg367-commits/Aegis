@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { getStatusBadgeClass } from "../utils/status";
 
 const initialRequest = { requestType: "Bank Account Update", details: "" };
 const initialExpense = { category: "Groceries", amount: "", expenseDate: "", note: "" };
@@ -99,7 +100,7 @@ export default function PensionPage() {
                 required
               />
             </label>
-            <button type="submit">Submit Request</button>
+            <button type="submit">Submit Pension Request</button>
           </form>
         </article>
       </section>
@@ -162,7 +163,7 @@ export default function PensionPage() {
                 onChange={(e) => setExpenseForm((p) => ({ ...p, note: e.target.value }))}
               />
             </label>
-            <button type="submit">Add Expense</button>
+            <button type="submit">Add Pension Expense</button>
           </form>
         </article>
       </section>
@@ -212,7 +213,7 @@ export default function PensionPage() {
                 <tr key={p.id}>
                   <td>{new Date(p.paymentDate).toLocaleDateString()}</td>
                   <td>INR {Number(p.amount).toFixed(2)}</td>
-                  <td><span className="badge success">{p.status}</span></td>
+                  <td><span className={`badge ${getStatusBadgeClass(p.status)}`}>{p.status}</span></td>
                   <td>{p.note}</td>
                 </tr>
               )) : (
@@ -241,7 +242,7 @@ export default function PensionPage() {
                 <tr key={r.id}>
                   <td>#{r.id}</td>
                   <td>{r.requestType}</td>
-                  <td><span className="badge warning">{r.status}</span></td>
+                  <td><span className={`badge ${getStatusBadgeClass(r.status)}`}>{r.status}</span></td>
                   <td>{new Date(r.createdAt).toLocaleDateString()}</td>
                   <td>{r.details}</td>
                 </tr>

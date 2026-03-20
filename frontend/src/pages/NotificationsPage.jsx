@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { getStatusBadgeClass } from "../utils/status";
 
 export default function NotificationsPage() {
   const { token } = useAuth();
@@ -48,7 +49,7 @@ export default function NotificationsPage() {
       {error && <div className="alert error">{error}</div>}
 
       <section className="card">
-        <button type="button" onClick={markAllRead}>Mark All as Read</button>
+        <button type="button" onClick={markAllRead}>Mark All Notifications as Read</button>
       </section>
 
       <section className="card">
@@ -72,10 +73,12 @@ export default function NotificationsPage() {
                   <td>{n.message}</td>
                   <td>{new Date(n.createdAt).toLocaleString()}</td>
                   <td>
-                    {n.isRead ? <span className="badge">Read</span> : <span className="badge warning">Unread</span>}
+                    <span className={`badge ${getStatusBadgeClass(n.isRead ? "Read" : "Unread")}`}>
+                      {n.isRead ? "Read" : "Unread"}
+                    </span>
                   </td>
                   <td>
-                    {!n.isRead ? <button type="button" onClick={() => markRead(n.id)}>Mark Read</button> : "-"}
+                    {!n.isRead ? <button type="button" onClick={() => markRead(n.id)}>Mark Notification as Read</button> : "-"}
                   </td>
                 </tr>
               )) : <tr><td colSpan={6}>No notifications yet.</td></tr>}

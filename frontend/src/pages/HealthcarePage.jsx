@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { getStatusBadgeClass } from "../utils/status";
 
 const initialAppointment = {
   providerId: "",
@@ -123,7 +124,7 @@ export default function HealthcarePage() {
               Note
               <textarea rows={3} value={appointmentForm.note} onChange={(e) => setAppointmentForm((p) => ({ ...p, note: e.target.value }))} />
             </label>
-            <button type="submit">Book Appointment</button>
+            <button type="submit">Book Healthcare Appointment</button>
           </form>
         </article>
 
@@ -172,7 +173,7 @@ export default function HealthcarePage() {
             {data.appointments.length ? data.appointments.map((a) => (
               <li key={a.id}>
                 <strong>{a.provider?.name || "Provider"}</strong> - {new Date(a.appointmentTime).toLocaleString()}<br />
-                Status: <span className="badge warning">{a.status}</span>
+                Status: <span className={`badge ${getStatusBadgeClass(a.status)}`}>{a.status}</span>
                 {a.isTelehealth && a.meetingLink && (
                   <>
                     {" "}| <a href={a.meetingLink} target="_blank" rel="noreferrer">Telehealth Link</a>
@@ -203,7 +204,7 @@ export default function HealthcarePage() {
               Remarks
               <textarea rows={3} value={claimForm.remarks} onChange={(e) => setClaimForm((p) => ({ ...p, remarks: e.target.value }))} />
             </label>
-            <button type="submit">Submit Claim</button>
+            <button type="submit">Submit Healthcare Claim</button>
           </form>
 
           <h3>Claim History</h3>
@@ -211,7 +212,7 @@ export default function HealthcarePage() {
             {data.claims.length ? data.claims.map((c) => (
               <li key={c.id}>
                 #{c.id} - {c.claimType} - INR {Number(c.amount).toFixed(2)}
-                <div>Status: <span className="badge warning">{c.status}</span></div>
+                <div>Status: <span className={`badge ${getStatusBadgeClass(c.status)}`}>{c.status}</span></div>
               </li>
             )) : <li>No claims submitted.</li>}
           </ul>

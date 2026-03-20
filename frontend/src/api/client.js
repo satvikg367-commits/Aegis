@@ -13,8 +13,8 @@ const buildRuntimeApiBaseCandidates = () => {
 };
 
 const API_BASE_CANDIDATES = [
-  import.meta.env.VITE_API_URL,
-  ...buildRuntimeApiBaseCandidates()
+  ...buildRuntimeApiBaseCandidates(),
+  import.meta.env.VITE_API_URL
 ]
   .map(normalizeBase)
   .filter(Boolean)

@@ -99,7 +99,7 @@ export default function CommunityPage() {
             Message
             <textarea rows={4} value={postForm.content} onChange={(e) => setPostForm((p) => ({ ...p, content: e.target.value }))} required />
           </label>
-          <button type="submit">Post</button>
+          <button type="submit">Publish Discussion Post</button>
         </form>
       </section>
 
@@ -116,7 +116,7 @@ export default function CommunityPage() {
               </div>
               <div>
                 {post.isFlagged && <span className="badge danger">Flagged</span>}
-                <button type="button" className="ghost-btn" onClick={() => reportPost(post.id)}>Report</button>
+                <button type="button" className="ghost-btn" onClick={() => reportPost(post.id)}>Report to Moderator</button>
               </div>
             </header>
 
@@ -139,7 +139,7 @@ export default function CommunityPage() {
                   value={replyDrafts[post.id] || ""}
                   onChange={(e) => setReplyDrafts((prev) => ({ ...prev, [post.id]: e.target.value }))}
                 />
-                <button type="button" onClick={() => createReply(post.id)}>Reply</button>
+                <button type="button" onClick={() => createReply(post.id)}>Submit Reply</button>
               </div>
             </div>
           </article>

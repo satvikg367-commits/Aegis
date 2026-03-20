@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { getStatusBadgeClass } from "../utils/status";
 
 const initialForm = { category: "Issue", message: "" };
 
@@ -61,7 +62,7 @@ export default function FeedbackPage() {
               Message
               <textarea rows={5} value={form.message} onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))} required />
             </label>
-            <button type="submit">Submit</button>
+            <button type="submit">Submit Feedback Ticket</button>
           </form>
         </article>
 
@@ -72,7 +73,7 @@ export default function FeedbackPage() {
               <li key={ticket.id}>
                 <strong>#{ticket.id}</strong> - {ticket.category}
                 <div>{ticket.message}</div>
-                <div className="subtle">Status: {ticket.status} | {new Date(ticket.createdAt).toLocaleString()}</div>
+                <div className="subtle">Status: <span className={`badge ${getStatusBadgeClass(ticket.status)}`}>{ticket.status}</span> | {new Date(ticket.createdAt).toLocaleString()}</div>
               </li>
             )) : <li>No feedback submitted yet.</li>}
           </ul>

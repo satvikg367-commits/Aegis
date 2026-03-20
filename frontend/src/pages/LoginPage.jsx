@@ -1,15 +1,15 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 
 const ThreeScene = lazy(() => import("../components/ThreeScene"));
 const INTRO_DURATION_MS = 4300;
+const INTRO_SEEN_KEY = "aegis:intro_seen";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { login } = useAuth();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
 
   const [email, setEmail] = useState("retired.officer@example.com");
   const [password, setPassword] = useState("ChangeMe123!");
@@ -17,20 +17,25 @@ export default function LoginPage() {
   const [requires2fa, setRequires2fa] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
-
-  useEffect(() => {
-    // Always replay intro whenever user lands on the login route.
-    setShowIntro(true);
-  }, [location.key]);
+  const [showIntro, setShowIntro] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.sessionStorage.getItem(INTRO_SEEN_KEY) !== "1";
+  });
 
   useEffect(() => {
     if (!showIntro) return;
     const timer = window.setTimeout(() => {
+      window.sessionStorage.setItem(INTRO_SEEN_KEY, "1");
       setShowIntro(false);
     }, INTRO_DURATION_MS);
     return () => window.clearTimeout(timer);
   }, [showIntro]);
+
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +53,7 @@ export default function LoginPage() {
       }
 
       login({ token: data.token, user: data.user });
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -57,10 +62,12 @@ export default function LoginPage() {
   };
 
   const skipIntro = () => {
+    window.sessionStorage.setItem(INTRO_SEEN_KEY, "1");
     setShowIntro(false);
   };
 
   const replayIntro = () => {
+    window.sessionStorage.removeItem(INTRO_SEEN_KEY);
     setShowIntro(true);
   };
 

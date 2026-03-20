@@ -107,7 +107,5 @@ app.use((err, _req, res, _next) => {
 });
 
 app.listen(port, () => {
-  console.log(`API listening on http://lcd /Users/satvikgupta/Downloads/defence/project/frontend
-npm run dev
-ocalhost:${port}`);
+  console.log(`API listening on http://localhost:${port}`);
 });

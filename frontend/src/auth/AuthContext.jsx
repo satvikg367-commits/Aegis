@@ -3,12 +3,44 @@ import { apiRequest } from "../api/client";
 
 const AuthContext = createContext(null);
 
+function safeGetItem(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return "";
+  }
+}
+
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // ignore storage errors in restricted browser modes
+  }
+}
+
+function safeRemoveItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // ignore storage errors in restricted browser modes
+  }
+}
+
+function loadStoredUser() {
+  try {
+    const raw = safeGetItem("portal_user");
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    safeRemoveItem("portal_user");
+    return null;
+  }
+}
+
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem("portal_token") || "");
-  const [user, setUser] = useState(() => {
-    const raw = localStorage.getItem("portal_user");
-    return raw ? JSON.parse(raw) : null;
-  });
+  const [token, setToken] = useState(() => safeGetItem("portal_token") || "");
+  const [user, setUser] = useState(() => loadStoredUser());
   const [loading, setLoading] = useState(Boolean(token));
 
   useEffect(() => {
@@ -20,7 +52,7 @@ export function AuthProvider({ children }) {
     apiRequest("/auth/me", { token })
       .then((data) => {
         setUser(data.user);
-        localStorage.setItem("portal_user", JSON.stringify(data.user));
+        safeSetItem("portal_user", JSON.stringify(data.user));
       })
       .catch((err) => {
         const message = String(err?.message || "").toLowerCase();
@@ -35,8 +67,8 @@ export function AuthProvider({ children }) {
         if (shouldInvalidateSession) {
           setToken("");
           setUser(null);
-          localStorage.removeItem("portal_token");
-          localStorage.removeItem("portal_user");
+          safeRemoveItem("portal_token");
+          safeRemoveItem("portal_user");
         }
       })
       .finally(() => setLoading(false));
@@ -45,22 +77,22 @@ export function AuthProvider({ children }) {
   const login = ({ token: nextToken, user: nextUser }) => {
     setToken(nextToken);
     setUser(nextUser);
-    localStorage.setItem("portal_token", nextToken);
-    localStorage.setItem("portal_user", JSON.stringify(nextUser));
+    safeSetItem("portal_token", nextToken);
+    safeSetItem("portal_user", JSON.stringify(nextUser));
   };
 
   const logout = () => {
     setToken("");
     setUser(null);
-    localStorage.removeItem("portal_token");
-    localStorage.removeItem("portal_user");
+    safeRemoveItem("portal_token");
+    safeRemoveItem("portal_user");
   };
 
   const refreshUser = async () => {
     if (!token) return;
     const data = await apiRequest("/auth/me", { token });
     setUser(data.user);
-    localStorage.setItem("portal_user", JSON.stringify(data.user));
+    safeSetItem("portal_user", JSON.stringify(data.user));
   };
 
   const value = useMemo(

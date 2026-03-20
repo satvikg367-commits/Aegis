@@ -7,6 +7,30 @@ const ThreeScene = lazy(() => import("../components/ThreeScene"));
 const INTRO_DURATION_MS = 4300;
 const INTRO_SEEN_KEY = "aegis:intro_seen";
 
+function safeGetSessionItem(key) {
+  try {
+    return window.sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSetSessionItem(key, value) {
+  try {
+    window.sessionStorage.setItem(key, value);
+  } catch {
+    // ignore storage-restricted browser modes
+  }
+}
+
+function safeRemoveSessionItem(key) {
+  try {
+    window.sessionStorage.removeItem(key);
+  } catch {
+    // ignore storage-restricted browser modes
+  }
+}
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isAuthenticated, loading: authLoading } = useAuth();
@@ -19,13 +43,13 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
-    return window.sessionStorage.getItem(INTRO_SEEN_KEY) !== "1";
+    return safeGetSessionItem(INTRO_SEEN_KEY) !== "1";
   });
 
   useEffect(() => {
     if (!showIntro) return;
     const timer = window.setTimeout(() => {
-      window.sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+      safeSetSessionItem(INTRO_SEEN_KEY, "1");
       setShowIntro(false);
     }, INTRO_DURATION_MS);
     return () => window.clearTimeout(timer);
@@ -62,12 +86,12 @@ export default function LoginPage() {
   };
 
   const skipIntro = () => {
-    window.sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+    safeSetSessionItem(INTRO_SEEN_KEY, "1");
     setShowIntro(false);
   };
 
   const replayIntro = () => {
-    window.sessionStorage.removeItem(INTRO_SEEN_KEY);
+    safeRemoveSessionItem(INTRO_SEEN_KEY);
     setShowIntro(true);
   };
 

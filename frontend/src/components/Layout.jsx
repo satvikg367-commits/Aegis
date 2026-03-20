@@ -69,6 +69,22 @@ const pageMetaMap = {
   }
 };
 
+function safeGetLocalItem(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSetLocalItem(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // ignore storage-restricted browser modes
+  }
+}
+
 function resolvePageKey(pathname) {
   if (pathname === "/") return "dashboard";
   if (pathname.startsWith("/pension")) return "pension";
@@ -153,12 +169,12 @@ export default function Layout({ children }) {
 
   const [projectorMode, setProjectorMode] = useState(() => {
     if (typeof window === "undefined") return false;
-    return window.localStorage.getItem("aegis-projector-mode") === "1";
+    return safeGetLocalItem("aegis-projector-mode") === "1";
   });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    window.localStorage.setItem("aegis-projector-mode", projectorMode ? "1" : "0");
+    safeSetLocalItem("aegis-projector-mode", projectorMode ? "1" : "0");
   }, [projectorMode]);
 
   useEffect(() => {
@@ -194,13 +210,16 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const prefersReducedMotion = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
 
     const nodes = Array.from(document.querySelectorAll(".container > section, .card"));
     nodes.forEach((node, index) => {
       node.classList.add("reveal-target");
       node.style.setProperty("--reveal-delay", `${Math.min(index * 35, 340)}ms`);
     });
+
+    if (typeof window.IntersectionObserver !== "function") return;
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -219,7 +238,8 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const prefersReducedMotion = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
 
     const cards = Array.from(document.querySelectorAll(".card"));
     const cleanups = cards.map((card) => {

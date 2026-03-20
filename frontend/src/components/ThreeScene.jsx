@@ -29,19 +29,25 @@ export default function ThreeScene({ className = "", mode = "hero" }) {
     const container = containerRef.current;
     if (!container) return undefined;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.matchMedia("(max-width: 900px)").matches;
+    const canUseMatchMedia = typeof window.matchMedia === "function";
+    const prefersReducedMotion = canUseMatchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false;
+    const isMobile = canUseMatchMedia ? window.matchMedia("(max-width: 900px)").matches : false;
     const isAmbient = mode === "ambient";
 
     const scene = new Scene();
     const camera = new PerspectiveCamera(isAmbient ? 52 : 46, 1, 0.1, 50);
     camera.position.set(0, isAmbient ? 0.08 : 0.24, isAmbient ? 5.5 : 4.1);
 
-    const renderer = new WebGLRenderer({
-      alpha: true,
-      antialias: !isMobile && !isAmbient,
-      powerPreference: "high-performance"
-    });
+    let renderer;
+    try {
+      renderer = new WebGLRenderer({
+        alpha: true,
+        antialias: !isMobile && !isAmbient,
+        powerPreference: "high-performance"
+      });
+    } catch {
+      return undefined;
+    }
     renderer.outputColorSpace = SRGBColorSpace;
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isAmbient ? (isMobile ? 1.1 : 1.45) : (isMobile ? 1.5 : 2)));

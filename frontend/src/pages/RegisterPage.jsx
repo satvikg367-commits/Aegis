@@ -6,6 +6,11 @@ const ThreeScene = lazy(() => import("../components/ThreeScene"));
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const enableThreeEffects =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname.startsWith("192.168."));
   const [form, setForm] = useState({ fullName: "", email: "", phone: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,9 +33,11 @@ export default function RegisterPage() {
 
   return (
     <div className="login-stage auth-stage">
-      <Suspense fallback={null}>
-        <ThreeScene mode="ambient" className="auth-three-scene" />
-      </Suspense>
+      {enableThreeEffects && (
+        <Suspense fallback={null}>
+          <ThreeScene mode="ambient" className="auth-three-scene" />
+        </Suspense>
+      )}
       <div className="auth-card">
         <h1>Create Account</h1>
         <p>Register as retired defence officer to access all services.</p>

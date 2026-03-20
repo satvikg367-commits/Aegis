@@ -1,9 +1,8 @@
-import { Suspense, lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
-
-const ThreeScene = lazy(() => import("../components/ThreeScene"));
+import ThreeScene from "../components/ThreeScene";
 const INTRO_DURATION_MS = 4300;
 const INTRO_SEEN_KEY = "aegis:intro_seen";
 
@@ -34,6 +33,11 @@ function safeRemoveSessionItem(key) {
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isAuthenticated, loading: authLoading } = useAuth();
+  const enableThreeEffects =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname.startsWith("192.168."));
 
   const [email, setEmail] = useState("retired.officer@example.com");
   const [password, setPassword] = useState("ChangeMe123!");
@@ -97,9 +101,7 @@ export default function LoginPage() {
 
   return (
     <div className="login-stage">
-      <Suspense fallback={null}>
-        <ThreeScene mode="ambient" className="auth-three-scene" />
-      </Suspense>
+      {enableThreeEffects && <ThreeScene mode="ambient" className="auth-three-scene" />}
       {showIntro && (
         <section className="cinematic-intro" aria-label="AEGIS Intro">
           <div className="cinematic-noise" aria-hidden="true" />

@@ -1,8 +1,7 @@
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-
-const ThreeScene = lazy(() => import("./ThreeScene"));
+import ThreeScene from "./ThreeScene";
 
 const links = [
   { to: "/", label: "Home", icon: "home" },
@@ -145,6 +144,11 @@ export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const { pathname } = useLocation();
   const rootRef = useRef(null);
+  const enableThreeEffects = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    const host = window.location.hostname;
+    return host === "localhost" || host === "127.0.0.1" || host.startsWith("192.168.");
+  }, []);
 
   const fontScale = user?.accessibility?.fontScale || 100;
   const highContrast = Boolean(user?.accessibility?.highContrast);
@@ -293,10 +297,8 @@ export default function Layout({ children }) {
       <div className="scroll-progress" aria-hidden="true">
         <span className="scroll-progress-fill" />
       </div>
-      {!highContrast && (
-        <Suspense fallback={null}>
-          <ThreeScene mode="ambient" className="global-three-scene" />
-        </Suspense>
+      {!highContrast && enableThreeEffects && (
+        <ThreeScene mode="ambient" className="global-three-scene" />
       )}
       <div className="immersive-layer" aria-hidden="true">
         <span className="immersive-orb orb-a" />

@@ -5,6 +5,11 @@ import { apiRequest } from "../api/client";
 const ThreeScene = lazy(() => import("../components/ThreeScene"));
 
 export default function RecoverPage() {
+  const enableThreeEffects =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname.startsWith("192.168."));
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -45,9 +50,11 @@ export default function RecoverPage() {
 
   return (
     <div className="login-stage auth-stage">
-      <Suspense fallback={null}>
-        <ThreeScene mode="ambient" className="auth-three-scene" />
-      </Suspense>
+      {enableThreeEffects && (
+        <Suspense fallback={null}>
+          <ThreeScene mode="ambient" className="auth-three-scene" />
+        </Suspense>
+      )}
       <div className="auth-card">
         <h1>Password Recovery</h1>
         {error && <div className="alert error">{error}</div>}

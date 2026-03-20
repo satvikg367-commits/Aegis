@@ -1,10 +1,9 @@
-import { Suspense, lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { getStatusBadgeClass } from "../utils/status";
-
-const ThreeScene = lazy(() => import("../components/ThreeScene"));
+import ThreeScene from "../components/ThreeScene";
 
 const coreServices = [
   {
@@ -72,6 +71,11 @@ export default function DashboardPage() {
   const { token, user } = useAuth();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const enableThreeEffects =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname.startsWith("192.168."));
 
   useEffect(() => {
     apiRequest("/dashboard/overview", { token })
@@ -113,9 +117,11 @@ export default function DashboardPage() {
           </div>
         </div>
         <div className="dashboard-hero-visual">
-          <Suspense fallback={<div className="dashboard-three-fallback" aria-hidden="true" />}>
+          {enableThreeEffects ? (
             <ThreeScene mode="hero" className="dashboard-three-scene" />
-          </Suspense>
+          ) : (
+            <div className="dashboard-three-fallback" aria-hidden="true" />
+          )}
           <div className="hero-core hero-core-overlay">
             <strong>AEGIS</strong>
             <span>Mission Ready</span>

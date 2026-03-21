@@ -11,7 +11,7 @@ export default function NotificationsPage() {
   const load = async () => {
     try {
       const data = await apiRequest("/notifications", { token });
-      setNotifications(data.notifications || []);
+      setNotifications(Array.isArray(data?.notifications) ? data.notifications : []);
     } catch (err) {
       setError(err.message);
     }

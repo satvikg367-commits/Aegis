@@ -16,7 +16,16 @@ export default function PensionPage() {
   const load = async () => {
     try {
       const payload = await apiRequest("/pension", { token });
-      setData(payload);
+      setData({
+        ...payload,
+        expenses: Array.isArray(payload?.expenses) ? payload.expenses : [],
+        payments: Array.isArray(payload?.payments) ? payload.payments : [],
+        requests: Array.isArray(payload?.requests) ? payload.requests : [],
+        monthlyPensionBudget: Number(payload?.monthlyPensionBudget || 0),
+        monthlyPaymentTotal: Number(payload?.monthlyPaymentTotal || 0),
+        monthlyExpenseTotal: Number(payload?.monthlyExpenseTotal || 0),
+        remainingBalance: Number(payload?.remainingBalance || 0)
+      });
     } catch (err) {
       setError(err.message);
     }

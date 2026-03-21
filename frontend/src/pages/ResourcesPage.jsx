@@ -13,8 +13,8 @@ export default function ResourcesPage() {
     try {
       const query = category ? `?category=${encodeURIComponent(category)}` : "";
       const data = await apiRequest(`/resources${query}`, { token });
-      setResources(data.resources || []);
-      setCategories(data.categories || []);
+      setResources(Array.isArray(data?.resources) ? data.resources : []);
+      setCategories(Array.isArray(data?.categories) ? data.categories : []);
       setSelectedCategory(category);
     } catch (err) {
       setError(err.message);

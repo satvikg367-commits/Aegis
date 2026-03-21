@@ -14,7 +14,7 @@ export default function FeedbackPage() {
   const load = async () => {
     try {
       const data = await apiRequest("/feedback", { token });
-      setTickets(data.tickets || []);
+      setTickets(Array.isArray(data?.tickets) ? data.tickets : []);
     } catch (err) {
       setError(err.message);
     }

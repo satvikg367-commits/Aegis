@@ -46,8 +46,14 @@ export default function CareerPage() {
   const load = async () => {
     try {
       const payload = await apiRequest("/career", { token });
-      setData(payload);
-      if (payload.latestResume) {
+      const normalizedPayload = {
+        ...payload,
+        jobs: Array.isArray(payload?.jobs) ? payload.jobs : [],
+        workshops: Array.isArray(payload?.workshops) ? payload.workshops : [],
+        applications: Array.isArray(payload?.applications) ? payload.applications : []
+      };
+      setData(normalizedPayload);
+      if (payload?.latestResume) {
         setResume({
           summary: payload.latestResume.summary,
           skills: payload.latestResume.skills,

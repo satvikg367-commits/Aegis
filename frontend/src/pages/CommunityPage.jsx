@@ -14,7 +14,14 @@ export default function CommunityPage() {
   const load = async () => {
     try {
       const data = await apiRequest("/community/posts", { token });
-      setPosts(data.posts || []);
+      setPosts(
+        Array.isArray(data?.posts)
+          ? data.posts.map((post) => ({
+              ...post,
+              replies: Array.isArray(post?.replies) ? post.replies : []
+            }))
+          : []
+      );
     } catch (err) {
       setError(err.message);
     }

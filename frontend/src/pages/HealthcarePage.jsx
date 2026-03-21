@@ -26,10 +26,17 @@ export default function HealthcarePage() {
   const load = async () => {
     try {
       const payload = await apiRequest("/healthcare", { token });
-      setData(payload);
+      const normalizedProviders = Array.isArray(payload?.providers) ? payload.providers : [];
+      setData({
+        ...payload,
+        providers: normalizedProviders,
+        benefits: Array.isArray(payload?.benefits) ? payload.benefits : [],
+        appointments: Array.isArray(payload?.appointments) ? payload.appointments : [],
+        claims: Array.isArray(payload?.claims) ? payload.claims : []
+      });
       setAppointmentForm((prev) => ({
         ...prev,
-        providerId: prev.providerId || String(payload.providers[0]?.id || "")
+        providerId: prev.providerId || String(normalizedProviders[0]?.id || "")
       }));
     } catch (err) {
       setError(err.message);

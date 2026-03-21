@@ -86,18 +86,23 @@ export default function DashboardPage() {
   if (error) return <div className="alert error">{error}</div>;
   if (!data) return <div className="center-note">Loading dashboard...</div>;
 
+  const upcomingAppointments = Array.isArray(data?.upcomingAppointments) ? data.upcomingAppointments : [];
+  const recommendedJobs = Array.isArray(data?.recommendedJobs) ? data.recommendedJobs : [];
+  const recentNotifications = Array.isArray(data?.recentNotifications) ? data.recentNotifications : [];
+  const activeRequests = Number(data?.activeRequests || 0);
+  const unreadNotifications = Number(data?.unreadNotifications || 0);
   const daysToPayment = daysUntil(data?.pensionProfile?.nextPaymentDate);
-  const urgentAlerts = (data.recentNotifications || []).filter((n) => !n.isRead).slice(0, 3);
-  const pensionStatus = data.activeRequests > 0 ? "Action Pending" : "On Track";
+  const urgentAlerts = recentNotifications.filter((n) => !n.isRead).slice(0, 3);
+  const pensionStatus = activeRequests > 0 ? "Action Pending" : "On Track";
   const readinessScore = Math.min(
     99,
     [
       data.pensionProfile ? 28 : 0,
       data.latestPayment ? 16 : 0,
-      data.upcomingAppointments.length ? 16 : 8,
-      data.recommendedJobs.length ? 16 : 6,
+      upcomingAppointments.length ? 16 : 8,
+      recommendedJobs.length ? 16 : 6,
       urgentAlerts.length ? 10 : 14,
-      data.activeRequests === 0 ? 13 : 8
+      activeRequests === 0 ? 13 : 8
     ].reduce((total, value) => total + value, 0)
   );
   const readinessTone = readinessScore >= 85 ? "success" : readinessScore >= 70 ? "warning" : "danger";
@@ -188,7 +193,7 @@ export default function DashboardPage() {
           </p>
           <p><strong>Pension ID:</strong> {data.pensionProfile?.pensionId || "Not available"}</p>
           <p><strong>Current Monthly Pension:</strong> INR {Number(data.pensionProfile?.currentAmount || 0).toFixed(2)}</p>
-          <p><strong>Active Pension Requests:</strong> {data.activeRequests}</p>
+          <p><strong>Active Pension Requests:</strong> {activeRequests}</p>
         </article>
 
         <article className="card priority-card">
@@ -221,23 +226,23 @@ export default function DashboardPage() {
           ) : (
             <p>No urgent alerts right now.</p>
           )}
-          <p className="subtle">Unread notifications: {data.unreadNotifications}</p>
+          <p className="subtle">Unread notifications: {unreadNotifications}</p>
         </article>
       </section>
 
       <section className="grid cards-4">
         <article className="card">
           <h2>Healthcare Priority</h2>
-          <p><strong>Upcoming Appointments:</strong> {data.upcomingAppointments.length}</p>
-          <p><strong>Next Appointment:</strong> {data.upcomingAppointments[0] ? `${data.upcomingAppointments[0].provider?.name || "Provider"} on ${new Date(data.upcomingAppointments[0].appointmentTime).toLocaleDateString()}` : "No appointment scheduled"}</p>
+          <p><strong>Upcoming Appointments:</strong> {upcomingAppointments.length}</p>
+          <p><strong>Next Appointment:</strong> {upcomingAppointments[0] ? `${upcomingAppointments[0].provider?.name || "Provider"} on ${new Date(upcomingAppointments[0].appointmentTime).toLocaleDateString()}` : "No appointment scheduled"}</p>
           <p className="subtle">Book or reschedule from Healthcare module.</p>
         </article>
 
         <article className="card">
           <h2>Career Opportunities</h2>
-          <p><strong>Suggested Jobs:</strong> {data.recommendedJobs.length}</p>
+          <p><strong>Suggested Jobs:</strong> {recommendedJobs.length}</p>
           <ul className="list compact">
-            {data.recommendedJobs.length ? data.recommendedJobs.slice(0, 2).map((job) => (
+            {recommendedJobs.length ? recommendedJobs.slice(0, 2).map((job) => (
               <li key={job.id}><strong>{job.title}</strong> at {job.company}</li>
             )) : <li>No recommendations available.</li>}
           </ul>
@@ -245,7 +250,7 @@ export default function DashboardPage() {
 
         <article className="card">
           <h2>Community Pulse</h2>
-          <p><strong>Recent Community Alerts:</strong> {(data.recentNotifications || []).filter((n) => n.category === "Community").length}</p>
+          <p><strong>Recent Community Alerts:</strong> {recentNotifications.filter((n) => n.category === "Community").length}</p>
           <p className="subtle">Connect with peers and experts in the Community forum.</p>
         </article>
 
@@ -262,8 +267,8 @@ export default function DashboardPage() {
       <section className="card">
         <h2>Recent Notifications</h2>
         <ul className="list compact">
-          {data.recentNotifications.length ? (
-            data.recentNotifications.map((n) => (
+          {recentNotifications.length ? (
+            recentNotifications.map((n) => (
               <li key={n.id}>
                 <strong>[{n.category}]</strong> {n.title}
                 <div className="subtle">{new Date(n.createdAt).toLocaleString()}</div>

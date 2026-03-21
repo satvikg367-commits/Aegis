@@ -32,7 +32,8 @@ async function parseResponseBody(res) {
   const text = await res.text().catch(() => "");
   return {
     message: text || "",
-    isNonJsonResponse: true
+    isNonJsonResponse: true,
+    contentType
   };
 }
 
@@ -59,6 +60,20 @@ export async function apiRequest(path, { method = "GET", body, token } = {}) {
       });
 
       const data = await parseResponseBody(res);
+      const isHtmlLikeSuccess =
+        res.ok &&
+        Boolean(data?.isNonJsonResponse) &&
+        typeof data?.contentType === "string" &&
+        data.contentType.toLowerCase().includes("text/html");
+
+      if (isHtmlLikeSuccess && index < API_BASE_CANDIDATES.length - 1) {
+        continue;
+      }
+
+      if (isHtmlLikeSuccess) {
+        throw new Error(`API endpoint returned HTML instead of JSON. Check VITE_API_URL for ${base}${normalizedPath}`);
+      }
+
       if (res.ok) return data;
 
       const isRouteNotFound =

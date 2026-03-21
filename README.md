@@ -59,6 +59,20 @@ Stop both services:
 npm run demo:stop
 ```
 
+## Render Single-Service Deploy
+
+If Render static-site + backend split keeps causing API/env mismatch, deploy the whole project as a single `Web Service`.
+
+- Root Directory: project root
+- Build Command: `npm run render:build`
+- Start Command: `npm run render:start`
+- Environment:
+  - `PORT=10000`
+  - `JWT_SECRET=replace-with-a-strong-secret`
+  - `VITE_API_URL=/api`
+
+This builds `frontend/dist`, then the Express server serves both the React app and `/api/*` from the same origin.
+
 ## Frontend Setup
 
 ```bash

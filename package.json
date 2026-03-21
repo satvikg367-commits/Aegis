@@ -3,6 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "render:build": "cd frontend && npm install && npm run build && cd ../backend && npm install",
+    "render:start": "cd backend && npm start",
     "demo": "bash scripts/run-demo.sh",
     "demo:stop": "bash scripts/stop-demo.sh"
   }

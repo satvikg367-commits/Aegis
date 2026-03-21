@@ -1,6 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.js";
 import dashboardRoutes from "./routes/dashboard.js";
@@ -16,6 +19,10 @@ import { getDb } from "./lib/db.js";
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frontendDistPath = path.resolve(__dirname, "../../frontend/dist");
+const frontendIndexPath = path.join(frontendDistPath, "index.html");
+const hasFrontendBuild = fs.existsSync(frontendIndexPath);
 const configuredOrigins = (process.env.FRONTEND_ORIGIN || "http://localhost:5173,http://127.0.0.1:5173")
   .split(",")
   .map((item) => item.trim())
@@ -64,15 +71,6 @@ app.use(
 );
 app.use(express.json({ limit: "1mb" }));
 
-app.get("/", (_req, res) => {
-  res.status(200).json({
-    app: "Retired Defence Officers Portal API",
-    message: "API is running.",
-    health: "/health",
-    meta: "/api/meta"
-  });
-});
-
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
@@ -96,6 +94,27 @@ app.use("/api/community", communityRoutes);
 app.use("/api/resources", resourcesRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/feedback", feedbackRoutes);
+
+if (hasFrontendBuild) {
+  app.use(express.static(frontendDistPath));
+
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api") || req.path === "/health") {
+      next();
+      return;
+    }
+    res.sendFile(frontendIndexPath);
+  });
+} else {
+  app.get("/", (_req, res) => {
+    res.status(200).json({
+      app: "Retired Defence Officers Portal API",
+      message: "API is running.",
+      health: "/health",
+      meta: "/api/meta"
+    });
+  });
+}
 
 app.use((req, res) => {
   res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });

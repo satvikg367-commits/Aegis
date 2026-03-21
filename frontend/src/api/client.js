@@ -13,8 +13,8 @@ const buildRuntimeApiBaseCandidates = () => {
 };
 
 const API_BASE_CANDIDATES = [
-  ...buildRuntimeApiBaseCandidates(),
-  import.meta.env.VITE_API_URL
+  import.meta.env.VITE_API_URL,
+  ...buildRuntimeApiBaseCandidates()
 ]
   .map(normalizeBase)
   .filter(Boolean)
@@ -65,13 +65,18 @@ export async function apiRequest(path, { method = "GET", body, token } = {}) {
         Boolean(data?.isNonJsonResponse) &&
         typeof data?.contentType === "string" &&
         data.contentType.toLowerCase().includes("text/html");
+      const isEmptyNonJsonSuccess =
+        res.ok &&
+        Boolean(data?.isNonJsonResponse) &&
+        !String(data?.contentType || "").trim() &&
+        !String(data?.message || "").trim();
 
-      if (isHtmlLikeSuccess && index < API_BASE_CANDIDATES.length - 1) {
+      if ((isHtmlLikeSuccess || isEmptyNonJsonSuccess) && index < API_BASE_CANDIDATES.length - 1) {
         continue;
       }
 
-      if (isHtmlLikeSuccess) {
-        throw new Error(`API endpoint returned HTML instead of JSON. Check VITE_API_URL for ${base}${normalizedPath}`);
+      if (isHtmlLikeSuccess || isEmptyNonJsonSuccess) {
+        throw new Error(`API endpoint returned a non-JSON success response. Check VITE_API_URL for ${base}${normalizedPath}`);
       }
 
       if (res.ok) return data;

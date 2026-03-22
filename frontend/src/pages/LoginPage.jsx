@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
-import ThreeScene from "../components/ThreeScene";
-const INTRO_DURATION_MS = 4300;
+
+const ThreeScene = lazy(() => import("../components/ThreeScene"));
+const INTRO_DURATION_MS = 2600;
 const INTRO_SEEN_KEY = "aegis:intro_seen";
 
 function safeGetSessionItem(key) {
@@ -38,6 +39,7 @@ export default function LoginPage() {
     (window.location.hostname === "localhost" ||
       window.location.hostname === "127.0.0.1" ||
       window.location.hostname.startsWith("192.168."));
+  const allowAutoIntro = useMemo(() => enableThreeEffects, [enableThreeEffects]);
 
   const [email, setEmail] = useState("retired.officer@example.com");
   const [password, setPassword] = useState("ChangeMe123!");
@@ -47,17 +49,28 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
+    if (!(
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname.startsWith("192.168.")
+    )) {
+      return false;
+    }
     return safeGetSessionItem(INTRO_SEEN_KEY) !== "1";
   });
 
   useEffect(() => {
     if (!showIntro) return;
+    if (!allowAutoIntro) {
+      setShowIntro(false);
+      return;
+    }
     const timer = window.setTimeout(() => {
       safeSetSessionItem(INTRO_SEEN_KEY, "1");
       setShowIntro(false);
     }, INTRO_DURATION_MS);
     return () => window.clearTimeout(timer);
-  }, [showIntro]);
+  }, [allowAutoIntro, showIntro]);
 
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
@@ -101,7 +114,11 @@ export default function LoginPage() {
 
   return (
     <div className="login-stage">
-      {enableThreeEffects && <ThreeScene mode="ambient" className="auth-three-scene" />}
+      {enableThreeEffects && (
+        <Suspense fallback={null}>
+          <ThreeScene mode="ambient" className="auth-three-scene" />
+        </Suspense>
+      )}
       {showIntro && (
         <section className="cinematic-intro" aria-label="AEGIS Intro">
           <div className="cinematic-noise" aria-hidden="true" />

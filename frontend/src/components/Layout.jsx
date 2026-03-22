@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import ThreeScene from "./ThreeScene";
+
+const ThreeScene = lazy(() => import("./ThreeScene"));
 
 const links = [
   { to: "/", label: "Home", icon: "home" },
@@ -298,7 +299,9 @@ export default function Layout({ children }) {
         <span className="scroll-progress-fill" />
       </div>
       {!highContrast && enableThreeEffects && (
-        <ThreeScene mode="ambient" className="global-three-scene" />
+        <Suspense fallback={null}>
+          <ThreeScene mode="ambient" className="global-three-scene" />
+        </Suspense>
       )}
       <div className="immersive-layer" aria-hidden="true">
         <span className="immersive-orb orb-a" />

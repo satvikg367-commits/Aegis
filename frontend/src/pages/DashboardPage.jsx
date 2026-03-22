@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { getStatusBadgeClass } from "../utils/status";
-import ThreeScene from "../components/ThreeScene";
+
+const ThreeScene = lazy(() => import("../components/ThreeScene"));
 
 const coreServices = [
   {
@@ -123,7 +124,9 @@ export default function DashboardPage() {
         </div>
         <div className="dashboard-hero-visual">
           {enableThreeEffects ? (
-            <ThreeScene mode="hero" className="dashboard-three-scene" />
+            <Suspense fallback={<div className="dashboard-three-fallback" aria-hidden="true" />}>
+              <ThreeScene mode="hero" className="dashboard-three-scene" />
+            </Suspense>
           ) : (
             <div className="dashboard-three-fallback" aria-hidden="true" />
           )}

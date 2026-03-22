@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import SmartAssistant from "./SmartAssistant";
 
 const ThreeScene = lazy(() => import("./ThreeScene"));
 
@@ -9,10 +10,8 @@ const links = [
   { to: "/pension", label: "Pension", icon: "pension" },
   { to: "/healthcare", label: "Healthcare", icon: "healthcare" },
   { to: "/career", label: "Career", icon: "career" },
-  { to: "/community", label: "Community", icon: "community" },
-  { to: "/resources", label: "Resources", icon: "resources" },
+  { to: "/csd", label: "CSD", icon: "csd" },
   { to: "/notifications", label: "Notifications", icon: "notifications" },
-  { to: "/feedback", label: "Feedback", icon: "feedback" },
   { to: "/profile", label: "Profile", icon: "profile" }
 ];
 
@@ -37,25 +36,15 @@ const pageMetaMap = {
     tagline: "Civilian opportunities, resume building, and workshops in one flow.",
     icon: "career"
   },
-  community: {
-    label: "Community Forum",
-    tagline: "Peer support, advice sharing, and moderated veteran discussions.",
-    icon: "community"
-  },
-  resources: {
-    label: "Resource Library",
-    tagline: "Curated guidance for financial, health, and post-service planning.",
-    icon: "resources"
+  csd: {
+    label: "CSD Services",
+    tagline: "Subsidized canteen ordering with quick access to essentials and electronics.",
+    icon: "csd"
   },
   notifications: {
     label: "Alert Center",
     tagline: "Timely updates from every module, prioritized for quick action.",
     icon: "notifications"
-  },
-  feedback: {
-    label: "Feedback Hub",
-    tagline: "Report issues and shape platform improvements directly.",
-    icon: "feedback"
   },
   profile: {
     label: "Security & Profile",
@@ -90,10 +79,8 @@ function resolvePageKey(pathname) {
   if (pathname.startsWith("/pension")) return "pension";
   if (pathname.startsWith("/healthcare")) return "healthcare";
   if (pathname.startsWith("/career")) return "career";
-  if (pathname.startsWith("/community")) return "community";
-  if (pathname.startsWith("/resources")) return "resources";
+  if (pathname.startsWith("/csd")) return "csd";
   if (pathname.startsWith("/notifications")) return "notifications";
-  if (pathname.startsWith("/feedback")) return "feedback";
   if (pathname.startsWith("/profile")) return "profile";
   return "default";
 }
@@ -119,6 +106,10 @@ function ModuleIcon({ name, className = "module-icon" }) {
     case "community":
       return (
         <svg viewBox="0 0 24 24" className={className} aria-hidden="true"><path d="M16 11a3 3 0 100-6 3 3 0 000 6zM8 13a3 3 0 100-6 3 3 0 000 6zM3 20a5 5 0 0110 0M13 20a5 5 0 018 0" /></svg>
+      );
+    case "csd":
+      return (
+        <svg viewBox="0 0 24 24" className={className} aria-hidden="true"><path d="M4 6h2l2.2 9.2a1 1 0 001 .8h7.9a1 1 0 001-.76L20 8H8M10 20a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm8 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" /></svg>
       );
     case "resources":
       return (
@@ -161,10 +152,8 @@ export default function Layout({ children }) {
     if (pathname.startsWith("/pension")) return "theme-pension";
     if (pathname.startsWith("/healthcare")) return "theme-healthcare";
     if (pathname.startsWith("/career")) return "theme-career";
-    if (pathname.startsWith("/community")) return "theme-community";
-    if (pathname.startsWith("/resources")) return "theme-resources";
+    if (pathname.startsWith("/csd")) return "theme-csd";
     if (pathname.startsWith("/notifications")) return "theme-notifications";
-    if (pathname.startsWith("/feedback")) return "theme-feedback";
     if (pathname.startsWith("/profile")) return "theme-profile";
     return "theme-default";
   }, [pathname]);
@@ -344,6 +333,11 @@ export default function Layout({ children }) {
           </strong>
           <span>{pageMeta.tagline}</span>
         </div>
+        <div className="portal-focus-bar">
+          <span className="trust-pill">Verified Retiree Access</span>
+          <span className="trust-pill">Privacy Protected</span>
+          <span className="trust-pill">Smart Guided Actions</span>
+        </div>
         {children}
       </main>
       <footer className="site-footer">Security notice: Never share OTP, password, or reset token.</footer>
@@ -352,6 +346,7 @@ export default function Layout({ children }) {
           Read This Page
         </button>
       )}
+      <SmartAssistant />
     </div>
   );
 }

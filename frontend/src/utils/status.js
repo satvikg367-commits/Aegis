@@ -8,6 +8,7 @@ export function getStatusBadgeClass(status = "") {
     normalized.includes("paid") ||
     normalized.includes("booked") ||
     normalized.includes("completed") ||
+    normalized.includes("delivered") ||
     normalized.includes("resolved") ||
     normalized.includes("confirmed") ||
     normalized.includes("read") ||
@@ -30,6 +31,7 @@ export function getStatusBadgeClass(status = "") {
     normalized.includes("submitted") ||
     normalized.includes("pending") ||
     normalized.includes("review") ||
+    normalized.includes("processing") ||
     normalized.includes("open") ||
     normalized.includes("applied") ||
     normalized.includes("interview")

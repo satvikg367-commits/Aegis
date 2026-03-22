@@ -1,18 +1,18 @@
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import RecoverPage from "./pages/RecoverPage";
-import DashboardPage from "./pages/DashboardPage";
-import PensionPage from "./pages/PensionPage";
-import HealthcarePage from "./pages/HealthcarePage";
-import CareerPage from "./pages/CareerPage";
-import CommunityPage from "./pages/CommunityPage";
-import ResourcesPage from "./pages/ResourcesPage";
-import NotificationsPage from "./pages/NotificationsPage";
-import FeedbackPage from "./pages/FeedbackPage";
-import ProfilePage from "./pages/ProfilePage";
+
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const RecoverPage = lazy(() => import("./pages/RecoverPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const PensionPage = lazy(() => import("./pages/PensionPage"));
+const HealthcarePage = lazy(() => import("./pages/HealthcarePage"));
+const CareerPage = lazy(() => import("./pages/CareerPage"));
+const CsdPage = lazy(() => import("./pages/CsdPage"));
+const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 function Shell() {
   return (
@@ -26,31 +26,40 @@ function NotFound() {
   return <div className="center-note">Page not found.</div>;
 }
 
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/recover" element={<RecoverPage />} />
+
+      <Route element={<ProtectedRoute />}>
+        <Route element={<Shell />}>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/pension" element={<PensionPage />} />
+          <Route path="/healthcare" element={<HealthcarePage />} />
+          <Route path="/career" element={<CareerPage />} />
+          <Route path="/csd" element={<CsdPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/community" element={<Navigate to="/" replace />} />
+          <Route path="/feedback" element={<Navigate to="/" replace />} />
+          <Route path="/resources" element={<Navigate to="/" replace />} />
+        </Route>
+      </Route>
+
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<Navigate to="/404" replace />} />
+    </Routes>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/recover" element={<RecoverPage />} />
-
-        <Route element={<ProtectedRoute />}>
-          <Route element={<Shell />}>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/pension" element={<PensionPage />} />
-            <Route path="/healthcare" element={<HealthcarePage />} />
-            <Route path="/career" element={<CareerPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/resources" element={<ResourcesPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-            <Route path="/feedback" element={<FeedbackPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-          </Route>
-        </Route>
-
-        <Route path="/404" element={<NotFound />} />
-        <Route path="*" element={<Navigate to="/404" replace />} />
-      </Routes>
+      <Suspense fallback={<div className="center-note">Loading portal...</div>}>
+        <AppRoutes />
+      </Suspense>
     </BrowserRouter>
   );
 }

@@ -48,7 +48,7 @@ router.post("/register", async (req, res) => {
         pension: true,
         healthcare: true,
         career: true,
-        community: true
+        csd: true
       },
       createdAt: new Date().toISOString()
     };

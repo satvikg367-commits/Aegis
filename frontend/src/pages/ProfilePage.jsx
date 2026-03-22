@@ -6,7 +6,7 @@ export default function ProfilePage() {
   const { token, user, refreshUser } = useAuth();
   const [profileForm, setProfileForm] = useState({ fullName: "", phone: "" });
   const [accessForm, setAccessForm] = useState({ highContrast: false, textToSpeech: false, fontScale: 100 });
-  const [notifyForm, setNotifyForm] = useState({ pension: true, healthcare: true, career: true, community: true });
+  const [notifyForm, setNotifyForm] = useState({ pension: true, healthcare: true, career: true, csd: true });
   const [twofaSecret, setTwofaSecret] = useState("");
   const [twofaUri, setTwofaUri] = useState("");
   const [twofaCode, setTwofaCode] = useState("");
@@ -25,7 +25,7 @@ export default function ProfilePage() {
       pension: Boolean(user.notificationPrefs?.pension),
       healthcare: Boolean(user.notificationPrefs?.healthcare),
       career: Boolean(user.notificationPrefs?.career),
-      community: Boolean(user.notificationPrefs?.community)
+      csd: Boolean(user.notificationPrefs?.csd)
     });
   }, [user]);
 
@@ -114,7 +114,7 @@ export default function ProfilePage() {
   return (
     <>
       <section>
-        <h1>Profile & Security</h1>
+        <h1>🛡️ Profile & Security</h1>
         <p className="subtle">Manage account details, accessibility preferences, alerts, and two-factor authentication.</p>
       </section>
 
@@ -219,8 +219,8 @@ export default function ProfilePage() {
               Career opportunities
             </label>
             <label className="inline-field">
-              <input type="checkbox" checked={notifyForm.community} onChange={(e) => setNotifyForm((p) => ({ ...p, community: e.target.checked }))} />
-              Community updates
+              <input type="checkbox" checked={notifyForm.csd} onChange={(e) => setNotifyForm((p) => ({ ...p, csd: e.target.checked }))} />
+              CSD updates
             </label>
             <button type="submit">Save Preferences</button>
           </form>

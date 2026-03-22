@@ -11,10 +11,12 @@ import profileRoutes from "./routes/profile.js";
 import pensionRoutes from "./routes/pension.js";
 import healthcareRoutes from "./routes/healthcare.js";
 import careerRoutes from "./routes/career.js";
+import csdRoutes from "./routes/csd.js";
 import communityRoutes from "./routes/community.js";
 import resourcesRoutes from "./routes/resources.js";
 import notificationsRoutes from "./routes/notifications.js";
 import feedbackRoutes from "./routes/feedback.js";
+import assistantRoutes from "./routes/assistant.js";
 import { getDb } from "./lib/db.js";
 
 const app = express();
@@ -90,10 +92,12 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/pension", pensionRoutes);
 app.use("/api/healthcare", healthcareRoutes);
 app.use("/api/career", careerRoutes);
+app.use("/api/csd", csdRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/resources", resourcesRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/assistant", assistantRoutes);
 
 if (hasFrontendBuild) {
   app.use(express.static(frontendDistPath));

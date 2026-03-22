@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { addNotification, getDb, nextId, updateDb } from "../lib/db.js";
+import { enrichClaim } from "../lib/portal.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
@@ -26,7 +27,8 @@ router.get("/", requireAuth, (req, res) => {
 
   const claims = db.healthcareClaims
     .filter((c) => c.userId === userId)
-    .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+    .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt))
+    .map(enrichClaim);
 
   return res.status(200).json({ providers, appointments, claims, benefits });
 });
@@ -77,7 +79,7 @@ router.post("/appointments", requireAuth, (req, res) => {
 });
 
 router.post("/claims", requireAuth, (req, res) => {
-  const { claimType = "", amount = 0, remarks = "" } = req.body || {};
+  const { claimType = "", amount = 0, remarks = "", documents = [] } = req.body || {};
   const numericAmount = Number(amount);
   if (!claimType.trim() || !numericAmount || numericAmount <= 0) {
     return res.status(400).json({ error: "claimType and positive amount are required" });
@@ -94,14 +96,15 @@ router.post("/claims", requireAuth, (req, res) => {
       amount: numericAmount,
       status: "Under Review",
       remarks: remarks.trim(),
-      submittedAt: new Date().toISOString()
+      submittedAt: new Date().toISOString(),
+      documents: Array.isArray(documents) ? documents.slice(0, 5) : []
     };
     db.healthcareClaims.push(claim);
     addNotification(db, userId, "Healthcare", "Claim submitted", `Claim #${id} has been submitted.`);
     return db;
   });
 
-  return res.status(201).json({ message: "Claim submitted", claim });
+  return res.status(201).json({ message: "Claim submitted", claim: enrichClaim(claim) });
 });
 
 export default router;

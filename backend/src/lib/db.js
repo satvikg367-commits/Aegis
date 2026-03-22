@@ -48,6 +48,8 @@ const REQUIRED_COLLECTIONS = [
   "resumes",
   "jobApplications",
   "workshops",
+  "csdProducts",
+  "csdOrders",
   "forumPosts",
   "forumReplies",
   "resourceItems",
@@ -69,7 +71,14 @@ function normalizeDbSchema(rawDb) {
   if (!db.meta.initializedAt) db.meta.initializedAt = seed.meta.initializedAt;
 
   for (const key of REQUIRED_COLLECTIONS) {
-    db[key] = asArray(db[key]);
+    db[key] = Array.isArray(db[key]) ? db[key] : asArray(seed[key]);
+  }
+
+  if (!db.csdProducts.length && Array.isArray(seed.csdProducts) && seed.csdProducts.length) {
+    db.csdProducts = seed.csdProducts;
+  }
+  if (!db.csdOrders.length && Array.isArray(seed.csdOrders) && seed.csdOrders.length) {
+    db.csdOrders = seed.csdOrders;
   }
 
   for (const [key, seedNextId] of Object.entries(seed.meta.nextIds)) {
@@ -96,11 +105,10 @@ function ensureDbFile() {
   }
 
   try {
-    const parsed = JSON.parse(fs.readFileSync(DB_PATH, "utf-8"));
-    const normalized = normalizeDbSchema(parsed);
-    const parsedText = JSON.stringify(parsed);
+    const rawText = fs.readFileSync(DB_PATH, "utf-8");
+    const normalized = normalizeDbSchema(JSON.parse(rawText));
     const normalizedText = JSON.stringify(normalized);
-    if (parsedText !== normalizedText) {
+    if (rawText !== normalizedText) {
       fs.writeFileSync(DB_PATH, JSON.stringify(normalized, null, 2), "utf-8");
     }
   } catch {
@@ -111,7 +119,7 @@ function ensureDbFile() {
 
 function readDb() {
   ensureDbFile();
-  return JSON.parse(fs.readFileSync(DB_PATH, "utf-8"));
+  return normalizeDbSchema(JSON.parse(fs.readFileSync(DB_PATH, "utf-8")));
 }
 
 function writeDb(nextDb) {

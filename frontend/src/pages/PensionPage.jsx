@@ -65,7 +65,7 @@ export default function PensionPage() {
   return (
     <>
       <section>
-        <h1>Pension Management</h1>
+        <h1>🪖 Pension Management</h1>
         <p className="subtle">Track pension credits, raise service requests, and manage expenses.</p>
       </section>
 

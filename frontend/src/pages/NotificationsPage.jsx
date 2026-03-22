@@ -42,8 +42,8 @@ export default function NotificationsPage() {
   return (
     <>
       <section>
-        <h1>Notifications & Alerts</h1>
-        <p className="subtle">Important updates from pension, healthcare, career, and community sections.</p>
+        <h1>🔔 Notifications & Alerts</h1>
+        <p className="subtle">Important updates from pension, healthcare, career, and CSD sections.</p>
       </section>
 
       {error && <div className="alert error">{error}</div>}

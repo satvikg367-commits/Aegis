@@ -53,7 +53,7 @@ router.put("/notifications", requireAuth, (req, res) => {
     pension = false,
     healthcare = false,
     career = false,
-    community = false
+    csd = false
   } = req.body || {};
 
   updateDb((db) => {
@@ -63,7 +63,7 @@ router.put("/notifications", requireAuth, (req, res) => {
         pension: Boolean(pension),
         healthcare: Boolean(healthcare),
         career: Boolean(career),
-        community: Boolean(community)
+        csd: Boolean(csd)
       };
     }
     return db;

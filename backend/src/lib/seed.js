@@ -26,7 +26,7 @@ export function createSeedDatabase() {
         pension: true,
         healthcare: true,
         career: true,
-        community: true
+        csd: true
       },
       createdAt
     },
@@ -49,7 +49,7 @@ export function createSeedDatabase() {
         pension: true,
         healthcare: true,
         career: true,
-        community: true
+        csd: true
       },
       createdAt
     }
@@ -298,6 +298,109 @@ export function createSeedDatabase() {
     }
   ];
 
+  const csdProducts = [
+    {
+      id: 1,
+      category: "Grocery",
+      name: "Family Grocery Kit",
+      description: "Monthly essentials pack with grains, oil, and pantry basics.",
+      mrp: 3650,
+      subsidizedPrice: 2980,
+      stockStatus: "In Stock",
+      isPopular: true,
+      isActive: true,
+      popularityScore: 92,
+      benefitLabel: "Defence Subsidy Applied"
+    },
+    {
+      id: 2,
+      category: "Electronics",
+      name: "Smart Induction Cooktop",
+      description: "Energy-efficient cooktop with defence canteen pricing.",
+      mrp: 4200,
+      subsidizedPrice: 3390,
+      stockStatus: "In Stock",
+      isPopular: true,
+      isActive: true,
+      popularityScore: 81,
+      benefitLabel: "CSD Electronics Benefit"
+    },
+    {
+      id: 3,
+      category: "Essentials",
+      name: "Wellness Essentials Pack",
+      description: "Daily living and personal care essentials for veterans.",
+      mrp: 2100,
+      subsidizedPrice: 1650,
+      stockStatus: "In Stock",
+      isPopular: true,
+      isActive: true,
+      popularityScore: 77,
+      benefitLabel: "Priority Subsidized Pricing"
+    },
+    {
+      id: 4,
+      category: "Electronics",
+      name: "Defence Secure Feature Phone",
+      description: "Simple large-button phone suitable for senior-friendly use.",
+      mrp: 3100,
+      subsidizedPrice: 2490,
+      stockStatus: "Low Stock",
+      isPopular: false,
+      isActive: true,
+      popularityScore: 63,
+      benefitLabel: "Senior Friendly Support"
+    }
+  ];
+
+  const csdOrders = [
+    {
+      id: 1,
+      userId: 1,
+      orderNumber: "CSD-240301-118",
+      status: "Delivered",
+      createdAt: isoDaysFromNow(-11),
+      estimatedDelivery: isoDaysFromNow(-7),
+      totalAmount: 2980,
+      totalSavings: 670,
+      items: [
+        {
+          productId: 1,
+          name: "Family Grocery Kit",
+          quantity: 1,
+          subsidizedPrice: 2980,
+          mrp: 3650
+        }
+      ]
+    },
+    {
+      id: 2,
+      userId: 1,
+      orderNumber: "CSD-240314-224",
+      status: "Processing",
+      createdAt: isoDaysFromNow(-2),
+      estimatedDelivery: isoDaysFromNow(3),
+      totalAmount: 5040,
+      totalSavings: 1260,
+      items: [
+        {
+          productId: 2,
+          name: "Smart Induction Cooktop",
+          quantity: 1,
+          subsidizedPrice: 3390,
+          mrp: 4200
+        },
+        {
+          productId: 3,
+          name: "Wellness Essentials Pack",
+          quantity: 1,
+          subsidizedPrice: 1650,
+          mrp: 2100
+        }
+      ]
+    }
+  ];
+
   const forumPosts = [
     {
       id: 1,
@@ -431,6 +534,15 @@ export function createSeedDatabase() {
       message: "Consultation claim #2 was approved.",
       isRead: true,
       createdAt: isoDaysFromNow(-18)
+    },
+    {
+      id: 7,
+      userId: 1,
+      category: "CSD",
+      title: "CSD order processing",
+      message: "Order CSD-240314-224 is being packed and will arrive in 3 days.",
+      isRead: false,
+      createdAt: isoDaysFromNow(-1)
     }
   ];
   const feedbackTickets = [
@@ -461,10 +573,12 @@ export function createSeedDatabase() {
         resumes: 2,
         jobApplications: 3,
         workshops: 3,
+        csdProducts: 5,
+        csdOrders: 3,
         forumPosts: 3,
         forumReplies: 4,
         resourceItems: 4,
-        notifications: 7,
+        notifications: 8,
         feedbackTickets: 2,
         passwordResetTokens: 1
       }
@@ -481,6 +595,8 @@ export function createSeedDatabase() {
     resumes,
     jobApplications,
     workshops,
+    csdProducts,
+    csdOrders,
     forumPosts,
     forumReplies,
     resourceItems,

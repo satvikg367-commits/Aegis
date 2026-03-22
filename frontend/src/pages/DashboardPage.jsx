@@ -1,296 +1,192 @@
-import { Suspense, lazy, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { enrichClaimProgress } from "../utils/insights";
 import { getStatusBadgeClass } from "../utils/status";
 
-const ThreeScene = lazy(() => import("../components/ThreeScene"));
-
-const coreServices = [
-  {
-    icon: "🪖",
-    title: "Pension Management",
-    description: "Track payments, raise requests, and manage monthly expenses in one workflow."
-  },
-  {
-    icon: "🏥",
-    title: "Healthcare Services",
-    description: "Book appointments, manage claims, and access verified providers."
-  },
-  {
-    icon: "💼",
-    title: "Career Transition",
-    description: "Build resumes, discover suitable jobs, and join transition workshops."
-  },
-  {
-    icon: "🔔",
-    title: "Alerts & Communication",
-    description: "Stay updated with pension, healthcare, career, and community notifications."
-  }
+const quickActions = [
+  { icon: "🏥", title: "File a Healthcare Claim", path: "/healthcare", description: "Upload documents and submit a claim draft fast." },
+  { icon: "🪖", title: "Check Pension", path: "/pension", description: "Review payout status and next pension date." },
+  { icon: "💼", title: "Explore Jobs", path: "/career", description: "See personalized civilian job matches." },
+  { icon: "🛒", title: "Order from CSD", path: "/csd", description: "Access subsidized products and repeat recent orders." }
 ];
-
-const demoFlowSteps = [
-  {
-    step: "01",
-    title: "Pension Action",
-    description: "Raise and track a pension request in under 30 seconds.",
-    path: "/pension",
-    actionLabel: "Open Pension"
-  },
-  {
-    step: "02",
-    title: "Healthcare Booking",
-    description: "Book an appointment and review claim status.",
-    path: "/healthcare",
-    actionLabel: "Open Healthcare"
-  },
-  {
-    step: "03",
-    title: "Career Match",
-    description: "View suggested jobs and show resume preview.",
-    path: "/career",
-    actionLabel: "Open Career"
-  },
-  {
-    step: "04",
-    title: "Alerts Review",
-    description: "Check urgent notifications and close pending items.",
-    path: "/notifications",
-    actionLabel: "Open Alerts"
-  }
-];
-
-function daysUntil(dateIso) {
-  if (!dateIso) return null;
-  const ts = new Date(dateIso).getTime();
-  if (Number.isNaN(ts)) return null;
-  const diff = ts - Date.now();
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
-}
 
 export default function DashboardPage() {
   const { token, user } = useAuth();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
-  const enableThreeEffects =
-    typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1" ||
-      window.location.hostname.startsWith("192.168."));
 
   useEffect(() => {
     apiRequest("/dashboard/overview", { token })
-      .then(setData)
+      .then((payload) => {
+        setData({
+          pension: payload?.pension || {},
+          recentClaims: Array.isArray(payload?.recentClaims) ? payload.recentClaims.map(enrichClaimProgress) : [],
+          jobRecommendations: Array.isArray(payload?.jobRecommendations) ? payload.jobRecommendations : [],
+          csdQuickAccess: payload?.csdQuickAccess || { recentOrders: [], popularItems: [] },
+          notificationSummary: payload?.notificationSummary || { unreadCount: 0, items: [] }
+        });
+      })
       .catch((err) => setError(err.message));
   }, [token]);
 
   if (error) return <div className="alert error">{error}</div>;
-  if (!data) return <div className="center-note">Loading dashboard...</div>;
+  if (!data) return <div className="center-note">Loading central dashboard...</div>;
 
-  const upcomingAppointments = Array.isArray(data?.upcomingAppointments) ? data.upcomingAppointments : [];
-  const recommendedJobs = Array.isArray(data?.recommendedJobs) ? data.recommendedJobs : [];
-  const recentNotifications = Array.isArray(data?.recentNotifications) ? data.recentNotifications : [];
-  const activeRequests = Number(data?.activeRequests || 0);
-  const unreadNotifications = Number(data?.unreadNotifications || 0);
-  const daysToPayment = daysUntil(data?.pensionProfile?.nextPaymentDate);
-  const urgentAlerts = recentNotifications.filter((n) => !n.isRead).slice(0, 3);
-  const pensionStatus = activeRequests > 0 ? "Action Pending" : "On Track";
-  const readinessScore = Math.min(
-    99,
-    [
-      data.pensionProfile ? 28 : 0,
-      data.latestPayment ? 16 : 0,
-      upcomingAppointments.length ? 16 : 8,
-      recommendedJobs.length ? 16 : 6,
-      urgentAlerts.length ? 10 : 14,
-      activeRequests === 0 ? 13 : 8
-    ].reduce((total, value) => total + value, 0)
-  );
-  const readinessTone = readinessScore >= 85 ? "success" : readinessScore >= 70 ? "warning" : "danger";
-  const readinessAngle = `${Math.round((readinessScore / 100) * 360)}deg`;
+  const quickCsdItems = data.csdQuickAccess.recentOrders?.length
+    ? data.csdQuickAccess.recentOrders
+    : data.csdQuickAccess.popularItems;
 
   return (
     <>
-      <section className="dashboard-hero">
-        <div className="dashboard-hero-copy">
-          <h1>AEGIS - A unified digital platform for retired defence officers to manage pension, healthcare, and re-employment in one place.</h1>
-          <p className="subtle">Simplifying post-service life with secure, centralized access to essential services.</p>
-          <p className="subtle"><strong>Welcome back:</strong> {user?.fullName}</p>
+      <section className="mission-dashboard">
+        <div className="mission-dashboard-copy">
+          <div className="section-eyebrow">Unified Assistance Dashboard</div>
+          <h1>Welcome back, {user?.fullName?.split(" ")[0] || "Officer"}.</h1>
+          <p className="subtle">
+            AEGIS brings pension, healthcare, career transition, and CSD services into one guided command center.
+          </p>
           <div className="hero-badges">
-            <span className="hero-badge">Secure Unified Access</span>
-            <span className="hero-badge">Realtime Service Tracking</span>
-            <span className="hero-badge">Career Transition Support</span>
+            <span className="hero-badge">Secure Verified Access</span>
+            <span className="hero-badge">Smart Assistance Active</span>
+            <span className="hero-badge">Retiree-First Design</span>
           </div>
         </div>
-        <div className="dashboard-hero-visual">
-          {enableThreeEffects ? (
-            <Suspense fallback={<div className="dashboard-three-fallback" aria-hidden="true" />}>
-              <ThreeScene mode="hero" className="dashboard-three-scene" />
-            </Suspense>
-          ) : (
-            <div className="dashboard-three-fallback" aria-hidden="true" />
-          )}
-          <div className="hero-core hero-core-overlay">
-            <strong>AEGIS</strong>
-            <span>Mission Ready</span>
+        <div className="mission-trust-panel">
+          <div className="trust-highlight">
+            <strong>Trusted & Protected</strong>
+            <p>Session encrypted, account verified, and key actions tracked for reliability.</p>
           </div>
+          <ul className="list compact">
+            <li>Secure pension and healthcare records</li>
+            <li>Verified service workflows</li>
+            <li>Reliable reminders and status updates</li>
+          </ul>
         </div>
       </section>
 
-      <section className="card">
-        <h2>Core Services</h2>
-        <div className="grid cards-4 core-services-grid">
-          {coreServices.map((service) => (
-            <article key={service.title} className="card service-card">
-              <div className="service-icon" aria-hidden="true">{service.icon}</div>
-              <h3>{service.title}</h3>
-              <p>{service.description}</p>
-            </article>
-          ))}
-        </div>
+      <section className="dashboard-actions-grid">
+        {quickActions.map((action) => (
+          <article key={action.title} className="card action-card">
+            <div className="service-icon" aria-hidden="true">{action.icon}</div>
+            <h3>{action.title}</h3>
+            <p>{action.description}</p>
+            <Link to={action.path} className="demo-step-link">Open</Link>
+          </article>
+        ))}
+      </section>
+
+      <section className="grid cards-2 dashboard-primary-grid">
+        <article className="card spotlight-card">
+          <div className="section-eyebrow">Pension Overview</div>
+          <h2>🪖 Pension Status</h2>
+          <p>
+            <span className={`badge ${getStatusBadgeClass(data.pension.status)}`}>{data.pension.status || "On Track"}</span>
+          </p>
+          <p><strong>Next Payment Date:</strong> {data.pension.profile?.nextPaymentDate ? new Date(data.pension.profile.nextPaymentDate).toLocaleDateString() : "Not available"}</p>
+          <p><strong>Monthly Pension:</strong> INR {Number(data.pension.profile?.currentAmount || 0).toFixed(2)}</p>
+          <p><strong>Active Requests:</strong> {Number(data.pension.activeRequests || 0)}</p>
+          {data.pension.latestPayment && (
+            <p className="subtle">
+              Last credited: INR {Number(data.pension.latestPayment.amount).toFixed(2)} on {new Date(data.pension.latestPayment.paymentDate).toLocaleDateString()}
+            </p>
+          )}
+        </article>
+
+        <article className="card spotlight-card">
+          <div className="section-eyebrow">Notifications Summary</div>
+          <h2>🔔 Important Notifications</h2>
+          <p><strong>Unread Alerts:</strong> {Number(data.notificationSummary.unreadCount || 0)}</p>
+          <ul className="list compact">
+            {(data.notificationSummary.items || []).slice(0, 4).map((item) => (
+              <li key={item.id}>
+                <strong>[{item.category}]</strong> {item.title}
+                <div className="subtle">{item.message}</div>
+              </li>
+            ))}
+          </ul>
+        </article>
       </section>
 
       <section className="grid cards-2">
-        <article className="card judge-demo-card">
-          <h2>Judge Demo Flow</h2>
-          <p className="subtle">Use this sequence for a clean 90-second walkthrough.</p>
-          <div className="demo-flow-grid">
-            {demoFlowSteps.map((step) => (
-              <article key={step.step} className="demo-step-card">
-                <span className="demo-step-index">{step.step}</span>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-                <Link to={step.path} className="demo-step-link">{step.actionLabel}</Link>
+        <article className="card">
+          <div className="section-eyebrow">Healthcare Claim Tracker</div>
+          <h2>🏥 Recent Healthcare Claims</h2>
+          <div className="claim-card-stack">
+            {data.recentClaims.length ? data.recentClaims.map((claim) => (
+              <article key={claim.id} className="claim-summary-card">
+                <div className="claim-summary-head">
+                  <strong>{claim.claimType}</strong>
+                  <span className={`badge ${getStatusBadgeClass(claim.status)}`}>{claim.status}</span>
+                </div>
+                <p>Claim #{claim.id} · INR {Number(claim.amount).toFixed(2)}</p>
+                <div className="progress-rail"><span style={{ width: `${claim.progressPercent}%` }} /></div>
+                <p className="subtle">{claim.estimatedProcessingTime}</p>
               </article>
-            ))}
+            )) : <p>No healthcare claims yet.</p>}
           </div>
         </article>
 
-        <article className="card readiness-card">
-          <h2>Mission Readiness</h2>
-          <div className="readiness-layout">
-            <div className="readiness-gauge" style={{ "--readiness-angle": readinessAngle }}>
-              <span>{readinessScore}%</span>
-            </div>
-            <div>
-              <p>
-                Current platform readiness:{" "}
-                <span className={`badge ${readinessTone}`}>{readinessScore >= 85 ? "High" : readinessScore >= 70 ? "Stable" : "Needs Attention"}</span>
-              </p>
-              <ul className="list compact">
-                <li>Pension profile and payment visibility are active.</li>
-                <li>Healthcare, career, and alerts are connected in one workflow.</li>
-                <li>Action statuses are visible across requests, bookings, and applications.</li>
-              </ul>
-            </div>
+        <article className="card">
+          <div className="section-eyebrow">Career Recommendations</div>
+          <h2>💼 Top 2 Job Matches</h2>
+          <div className="job-reco-stack">
+            {data.jobRecommendations.length ? data.jobRecommendations.map((job) => (
+              <article key={job.id} className="job-reco-card">
+                <div className="claim-summary-head">
+                  <strong>{job.title}</strong>
+                  <span className={`badge ${job.matchPercent >= 80 ? "success" : "warning"}`}>{job.matchPercent}% Match</span>
+                </div>
+                <p>{job.company} · {job.location}</p>
+                <p className="subtle">{job.reason}</p>
+              </article>
+            )) : <p>No job recommendations available.</p>}
           </div>
         </article>
       </section>
 
-      <section className="grid cards-3">
-        <article className="card priority-card">
-          <h2>Pension Status</h2>
-          <p>
-            <strong>Status:</strong>{" "}
-            <span className={`badge ${getStatusBadgeClass(pensionStatus)}`}>{pensionStatus}</span>
-          </p>
-          <p><strong>Pension ID:</strong> {data.pensionProfile?.pensionId || "Not available"}</p>
-          <p><strong>Current Monthly Pension:</strong> INR {Number(data.pensionProfile?.currentAmount || 0).toFixed(2)}</p>
-          <p><strong>Active Pension Requests:</strong> {activeRequests}</p>
-        </article>
-
-        <article className="card priority-card">
-          <h2>Upcoming Payment</h2>
-          {data.pensionProfile ? (
-            <>
-              <p><strong>Expected Date:</strong> {new Date(data.pensionProfile.nextPaymentDate).toLocaleDateString()}</p>
-              <p>
-                <strong>ETA:</strong>{" "}
-                {daysToPayment === null ? "Not available" : daysToPayment < 0 ? "Date passed" : `${daysToPayment} day(s)`}
-              </p>
-              <p><strong>Last Credit:</strong> {data.latestPayment ? `INR ${Number(data.latestPayment.amount).toFixed(2)} on ${new Date(data.latestPayment.paymentDate).toLocaleDateString()}` : "No recent payment found"}</p>
-            </>
-          ) : (
-            <p>Pension profile not linked yet.</p>
-          )}
-        </article>
-
-        <article className="card priority-card">
-          <h2>Urgent Alerts</h2>
-          {urgentAlerts.length ? (
-            <ul className="list compact">
-              {urgentAlerts.map((alert) => (
-                <li key={alert.id}>
-                  <strong>[{alert.category}]</strong> {alert.title}
-                  <div className="subtle">{alert.message}</div>
-                </li>
+      <section className="grid cards-2">
+        <article className="card">
+          <div className="section-eyebrow">CSD Quick Access</div>
+          <h2>🛒 CSD Essentials</h2>
+          {quickCsdItems?.length ? (
+            <div className="product-grid compact-products">
+              {quickCsdItems.slice(0, 2).map((item) => (
+                <article key={item.id || item.orderNumber} className="product-card compact">
+                  {"orderNumber" in item ? (
+                    <>
+                      <strong>{item.orderNumber}</strong>
+                      <p>Status: <span className={`badge ${getStatusBadgeClass(item.status)}`}>{item.status}</span></p>
+                      <p className="subtle">Savings INR {Number(item.totalSavings || 0).toFixed(0)}</p>
+                    </>
+                  ) : (
+                    <>
+                      <strong>{item.name}</strong>
+                      <p>INR {Number(item.subsidizedPrice).toFixed(0)}</p>
+                      <p className="subtle">{item.benefitLabel}</p>
+                    </>
+                  )}
+                </article>
               ))}
-            </ul>
+            </div>
           ) : (
-            <p>No urgent alerts right now.</p>
+            <p>No CSD activity yet.</p>
           )}
-          <p className="subtle">Unread notifications: {unreadNotifications}</p>
-        </article>
-      </section>
-
-      <section className="grid cards-4">
-        <article className="card">
-          <h2>Healthcare Priority</h2>
-          <p><strong>Upcoming Appointments:</strong> {upcomingAppointments.length}</p>
-          <p><strong>Next Appointment:</strong> {upcomingAppointments[0] ? `${upcomingAppointments[0].provider?.name || "Provider"} on ${new Date(upcomingAppointments[0].appointmentTime).toLocaleDateString()}` : "No appointment scheduled"}</p>
-          <p className="subtle">Book or reschedule from Healthcare module.</p>
+          <Link to="/csd" className="demo-step-link">Go to CSD</Link>
         </article>
 
         <article className="card">
-          <h2>Career Opportunities</h2>
-          <p><strong>Suggested Jobs:</strong> {recommendedJobs.length}</p>
+          <div className="section-eyebrow">Smart Guidance</div>
+          <h2>🤖 Assistant Highlights</h2>
           <ul className="list compact">
-            {recommendedJobs.length ? recommendedJobs.slice(0, 2).map((job) => (
-              <li key={job.id}><strong>{job.title}</strong> at {job.company}</li>
-            )) : <li>No recommendations available.</li>}
+            <li>Ask about pension status and next payment date</li>
+            <li>Get guided healthcare claim filing steps</li>
+            <li>See personalized job suggestions with reasons</li>
+            <li>Check eligible CSD products and order reminders</li>
           </ul>
+          <p className="subtle">Use the floating Smart Assist button from any portal page.</p>
         </article>
-
-        <article className="card">
-          <h2>Community Pulse</h2>
-          <p><strong>Recent Community Alerts:</strong> {recentNotifications.filter((n) => n.category === "Community").length}</p>
-          <p className="subtle">Connect with peers and experts in the Community forum.</p>
-        </article>
-
-        <article className="card">
-          <h2>Smart Assistance</h2>
-          <ul className="list compact">
-            <li>Your pension will be credited in {daysToPayment === null ? "N/A" : `${Math.max(daysToPayment, 0)} day(s)`}.</li>
-            <li>New job roles are matched to leadership and security experience.</li>
-            <li>Healthcare claims and appointments can be tracked in one place.</li>
-          </ul>
-        </article>
-      </section>
-
-      <section className="card">
-        <h2>Recent Notifications</h2>
-        <ul className="list compact">
-          {recentNotifications.length ? (
-            recentNotifications.map((n) => (
-              <li key={n.id}>
-                <strong>[{n.category}]</strong> {n.title}
-                <div className="subtle">{new Date(n.createdAt).toLocaleString()}</div>
-              </li>
-            ))
-          ) : (
-            <li>No notifications yet.</li>
-          )}
-        </ul>
-      </section>
-
-      <section className="card impact-card">
-        <h2>Why AEGIS Matters</h2>
-        <ul className="list compact">
-          <li>Reduces dependency on multiple disconnected systems.</li>
-          <li>Saves time for retired officers with one secure workflow.</li>
-          <li>Improves access to healthcare, pension support, and re-employment.</li>
-          <li>Digitizes fragmented services into a single mission-ready platform.</li>
-        </ul>
       </section>
     </>
   );

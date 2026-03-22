@@ -10,6 +10,7 @@ router.get("/", requireAuth, (req, res) => {
 
   const notifications = db.notifications
     .filter((n) => n.userId === userId)
+    .filter((n) => ["Pension", "Healthcare", "Career", "CSD"].includes(n.category))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return res.status(200).json({ notifications });

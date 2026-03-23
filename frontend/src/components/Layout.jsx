@@ -183,11 +183,13 @@ export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const { pathname } = useLocation();
   const rootRef = useRef(null);
-  const enableThreeEffects = useMemo(() => {
+  const isLocalPortal = useMemo(() => {
     if (typeof window === "undefined") return false;
     const host = window.location.hostname;
     return host === "localhost" || host === "127.0.0.1" || host.startsWith("192.168.");
   }, []);
+  const enableThreeEffects = isLocalPortal;
+  const enableEnhancedMotion = isLocalPortal;
 
   const fontScale = user?.accessibility?.fontScale || 100;
   const highContrast = Boolean(user?.accessibility?.highContrast);
@@ -239,11 +241,7 @@ export default function Layout({ children }) {
   }, [projectorMode]);
 
   useEffect(() => {
-    const host = typeof window !== "undefined" ? window.location.hostname : "";
-    const isHostedPortal =
-      Boolean(host) && host !== "localhost" && host !== "127.0.0.1" && !host.startsWith("192.168.");
-
-    if (!isHostedPortal) return undefined;
+    if (isLocalPortal) return undefined;
 
     warmApiConnection();
     const timer = window.setInterval(() => {
@@ -251,14 +249,14 @@ export default function Layout({ children }) {
     }, 4 * 60 * 1000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [isLocalPortal]);
 
   useEffect(() => {
     setSearchQuery("");
   }, [pathname]);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !rootRef.current) return;
+    if (typeof window === "undefined" || !rootRef.current || !enableEnhancedMotion) return;
 
     let raf = 0;
     const updateDepth = () => {
@@ -286,10 +284,10 @@ export default function Layout({ children }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [pathname]);
+  }, [enableEnhancedMotion, pathname]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !enableEnhancedMotion) return;
     const prefersReducedMotion = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
@@ -314,10 +312,10 @@ export default function Layout({ children }) {
 
     nodes.forEach((node) => io.observe(node));
     return () => io.disconnect();
-  }, [pathname]);
+  }, [enableEnhancedMotion, pathname]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !enableEnhancedMotion) return;
     const prefersReducedMotion = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
@@ -351,7 +349,7 @@ export default function Layout({ children }) {
     return () => {
       cleanups.forEach((cleanup) => cleanup());
     };
-  }, [pathname]);
+  }, [enableEnhancedMotion, pathname]);
 
   const readPage = () => {
     if (!canSpeak) return;
@@ -390,12 +388,14 @@ export default function Layout({ children }) {
           <ThreeScene mode="ambient" className="global-three-scene" />
         </Suspense>
       )}
-      <div className="immersive-layer" aria-hidden="true">
-        <span className="immersive-orb orb-a" />
-        <span className="immersive-orb orb-b" />
-        <span className="immersive-orb orb-c" />
-        <span className="immersive-grid" />
-      </div>
+      {enableEnhancedMotion && (
+        <div className="immersive-layer" aria-hidden="true">
+          <span className="immersive-orb orb-a" />
+          <span className="immersive-orb orb-b" />
+          <span className="immersive-orb orb-c" />
+          <span className="immersive-grid" />
+        </div>
+      )}
       <header className="site-header">
         <div className="brand-stack">
           <div className="brand-mark">AEGIS</div>

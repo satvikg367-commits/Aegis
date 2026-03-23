@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">AEGIS Favicon</title>
+  <desc id="desc">Shield-shaped AEGIS portal icon for retired defence officers.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4f91" />
+      <stop offset="100%" stop-color="#2ea6ff" />
+    </linearGradient>
+    <linearGradient id="shield" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f2fbff" />
+      <stop offset="100%" stop-color="#cde6ff" />
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="16" fill="url(#bg)" />
+  <path
+    d="M32 10 49 16v14c0 10.6-6.2 19.5-17 24-10.8-4.5-17-13.4-17-24V16l17-6Z"
+    fill="url(#shield)"
+    opacity="0.95"
+  />
+  <path
+    d="M32 15.8 44 20v10.4c0 7.7-4.4 14.2-12 17.6-7.6-3.4-12-9.9-12-17.6V20l12-4.2Z"
+    fill="#0f2f59"
+  />
+  <path
+    d="M32 20.4 40.8 42h-5.9l-1.5-4.1h-7L24.9 42H23 18.8l8.4-21.6Zm-2 12.8h2.2L31 29.4Z"
+    fill="#87d5ff"
+  />
+  <path
+    d="M44 20v10.4c0 7.7-4.4 14.2-12 17.6-7.6-3.4-12-9.9-12-17.6V20l12-4.2"
+    fill="none"
+    stroke="#76c8ff"
+    stroke-width="1.8"
+    stroke-linejoin="round"
+  />
+</svg>

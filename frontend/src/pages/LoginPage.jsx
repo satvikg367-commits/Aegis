@@ -4,7 +4,6 @@ import { apiRequest, warmApiConnection } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 
 const ThreeScene = lazy(() => import("../components/ThreeScene"));
-const INTRO_DURATION_MS = 2600;
 const INTRO_SEEN_KEY = "aegis:intro_seen";
 
 function safeGetSessionItem(key) {
@@ -34,13 +33,14 @@ function safeRemoveSessionItem(key) {
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isAuthenticated, loading: authLoading } = useAuth();
-  const enableThreeEffects =
+  const isLocalPortal =
     typeof window !== "undefined" &&
     (window.location.hostname === "localhost" ||
       window.location.hostname === "127.0.0.1" ||
       window.location.hostname.startsWith("192.168."));
-  const isHostedPortal = typeof window !== "undefined" && !enableThreeEffects;
-  const allowAutoIntro = useMemo(() => enableThreeEffects, [enableThreeEffects]);
+  const enableThreeEffects = isLocalPortal;
+  const isHostedPortal = typeof window !== "undefined" && !isLocalPortal;
+  const introDuration = useMemo(() => (isHostedPortal ? 1600 : 2200), [isHostedPortal]);
 
   const [email, setEmail] = useState("retired.officer@example.com");
   const [password, setPassword] = useState("ChangeMe123!");
@@ -51,28 +51,17 @@ export default function LoginPage() {
   const [connectionStatus, setConnectionStatus] = useState(isHostedPortal ? "warming" : "ready");
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
-    if (!(
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1" ||
-      window.location.hostname.startsWith("192.168.")
-    )) {
-      return false;
-    }
     return safeGetSessionItem(INTRO_SEEN_KEY) !== "1";
   });
 
   useEffect(() => {
     if (!showIntro) return;
-    if (!allowAutoIntro) {
-      setShowIntro(false);
-      return;
-    }
     const timer = window.setTimeout(() => {
       safeSetSessionItem(INTRO_SEEN_KEY, "1");
       setShowIntro(false);
-    }, INTRO_DURATION_MS);
+    }, introDuration);
     return () => window.clearTimeout(timer);
-  }, [allowAutoIntro, showIntro]);
+  }, [introDuration, showIntro]);
 
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
@@ -143,7 +132,7 @@ export default function LoginPage() {
         </Suspense>
       )}
       {showIntro && (
-        <section className="cinematic-intro" aria-label="AEGIS Intro">
+        <section className={`cinematic-intro ${isHostedPortal ? "hosted-lite" : ""}`} aria-label="AEGIS Intro">
           <div className="cinematic-noise" aria-hidden="true" />
           <div className="cinematic-lights" aria-hidden="true">
             <span className="beam beam-a" />

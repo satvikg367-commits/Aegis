@@ -43,7 +43,7 @@ export default function DashboardPage() {
       <section className="mission-dashboard">
         <div className="mission-dashboard-copy">
           <div className="section-eyebrow">Unified Assistance Dashboard</div>
-          <h1>Welcome back, {user?.fullName?.split(" ")[0] || "Officer"}.</h1>
+          <h1>WELCOME BACK:{user?.fullName || "Officer"}.</h1>
           <p className="subtle">
             AEGIS brings pension, healthcare, career transition, and CSD services into one guided command center.
           </p>

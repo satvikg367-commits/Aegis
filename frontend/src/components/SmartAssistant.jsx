@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
@@ -16,6 +16,8 @@ export default function SmartAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPrompts, setShowPrompts] = useState(true);
+  const feedRef = useRef(null);
   const [messages, setMessages] = useState([
     {
       id: "welcome",
@@ -32,11 +34,29 @@ export default function SmartAssistant() {
     () => messages.filter((message) => message.role === "assistant").length,
     [messages]
   );
+  const hasConversation = useMemo(
+    () => loading || messages.some((message) => message.role === "user"),
+    [loading, messages]
+  );
+
+  useEffect(() => {
+    if (!isOpen || !feedRef.current) return;
+
+    const timer = window.setTimeout(() => {
+      feedRef.current?.scrollTo({
+        top: feedRef.current.scrollHeight,
+        behavior: "smooth"
+      });
+    }, 40);
+
+    return () => window.clearTimeout(timer);
+  }, [isOpen, loading, messages]);
 
   const askAssistant = async (question) => {
     const trimmed = String(question || "").trim();
     if (!trimmed) return;
 
+    setShowPrompts(false);
     setMessages((current) => [
       ...current,
       { id: `user-${Date.now()}`, role: "user", text: trimmed }
@@ -106,7 +126,10 @@ export default function SmartAssistant() {
       </button>
 
       {isOpen && (
-        <aside className="assistant-panel" aria-label="AEGIS Smart Assistant Panel">
+        <aside
+          className={`assistant-panel ${hasConversation ? "has-results" : ""}`}
+          aria-label="AEGIS Smart Assistant Panel"
+        >
           <header className="assistant-panel-header">
             <div>
               <strong>AEGIS Smart Assistance</strong>
@@ -121,17 +144,28 @@ export default function SmartAssistant() {
             <span className="trust-pill">Verified Guidance</span>
             <span className="trust-pill">Secure Session</span>
             <span className="trust-pill">Privacy Protected</span>
-          </div>
-
-          <div className="assistant-prompts">
-            {starterPrompts.map((prompt) => (
-              <button key={prompt} type="button" className="prompt-chip" onClick={() => askAssistant(prompt)}>
-                {prompt}
+            {hasConversation && (
+              <button
+                type="button"
+                className="assistant-chip-toggle"
+                onClick={() => setShowPrompts((value) => !value)}
+              >
+                {showPrompts ? "Hide quick prompts" : "Show quick prompts"}
               </button>
-            ))}
+            )}
           </div>
 
-          <div className="assistant-feed">
+          {(!hasConversation || showPrompts) && (
+            <div className="assistant-prompts">
+              {starterPrompts.map((prompt) => (
+                <button key={prompt} type="button" className="prompt-chip" onClick={() => askAssistant(prompt)}>
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div ref={feedRef} className="assistant-feed">
             {messages.map((message) => (
               <article key={message.id} className={`assistant-message ${message.role}`}>
                 {message.role === "user" ? (
@@ -140,7 +174,7 @@ export default function SmartAssistant() {
                   <>
                     <strong>{message.title}</strong>
                     <p>{message.answer}</p>
-                    {!!message.details?.length && (
+                    {!(message.id === "welcome" && hasConversation) && !!message.details?.length && (
                       <ul className="list compact">
                         {message.details.map((detail) => <li key={detail}>{detail}</li>)}
                       </ul>
@@ -159,7 +193,7 @@ export default function SmartAssistant() {
                         ))}
                       </div>
                     )}
-                    {!!message.reminders?.length && (
+                    {!(message.id === "welcome" && hasConversation) && !!message.reminders?.length && (
                       <div className="assistant-reminders">
                         {message.reminders.map((reminder) => (
                           <span key={reminder} className="assistant-reminder">{reminder}</span>
@@ -170,6 +204,12 @@ export default function SmartAssistant() {
                 )}
               </article>
             ))}
+            {loading && (
+              <article className="assistant-message assistant thinking">
+                <strong>Working on it</strong>
+                <p>Preparing the best next step for you.</p>
+              </article>
+            )}
           </div>
 
           <form

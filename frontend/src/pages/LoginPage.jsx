@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiRequest } from "../api/client";
+import { apiRequest, warmApiConnection } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 
 const ThreeScene = lazy(() => import("../components/ThreeScene"));
@@ -39,6 +39,7 @@ export default function LoginPage() {
     (window.location.hostname === "localhost" ||
       window.location.hostname === "127.0.0.1" ||
       window.location.hostname.startsWith("192.168."));
+  const isHostedPortal = typeof window !== "undefined" && !enableThreeEffects;
   const allowAutoIntro = useMemo(() => enableThreeEffects, [enableThreeEffects]);
 
   const [email, setEmail] = useState("retired.officer@example.com");
@@ -47,6 +48,7 @@ export default function LoginPage() {
   const [requires2fa, setRequires2fa] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState(isHostedPortal ? "warming" : "ready");
   const [showIntro, setShowIntro] = useState(() => {
     if (typeof window === "undefined") return true;
     if (!(
@@ -77,6 +79,27 @@ export default function LoginPage() {
       navigate("/", { replace: true });
     }
   }, [authLoading, isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (!isHostedPortal) return undefined;
+
+    let isActive = true;
+    warmApiConnection()
+      .then((isReady) => {
+        if (isActive) {
+          setConnectionStatus(isReady ? "ready" : "slow");
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setConnectionStatus("slow");
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [isHostedPortal]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -135,7 +158,7 @@ export default function LoginPage() {
           <div className="cinematic-copy">
             <p className="cinematic-kicker">Retired Defence Officers Digital Command Platform</p>
             <h1 className="cinematic-brand">AEGIS</h1>
-            <p className="cinematic-tagline">Mission-ready pension, healthcare, career, and community support.</p>
+            <p className="cinematic-tagline">Mission-ready pension, healthcare, career, and CSD support.</p>
             <div className="cinematic-progress" aria-hidden="true">
               <span className="cinematic-progress-fill" />
             </div>
@@ -149,7 +172,7 @@ export default function LoginPage() {
       <div className="auth-card">
         <div className="auth-brand">AEGIS</div>
         <h1>Secure Login</h1>
-        <p>Access pension, healthcare, career, and community modules.</p>
+        <p>Access pension, healthcare, career, and CSD services.</p>
         {error && <div className="alert error">{error}</div>}
         <form className="form-grid" onSubmit={onSubmit}>
           <label>
@@ -175,6 +198,13 @@ export default function LoginPage() {
             Replay intro
           </button>
         </div>
+        {isHostedPortal && (
+          <p className={`subtle connection-status ${connectionStatus}`}>
+            {connectionStatus === "warming" && "Preparing secure services for faster access..."}
+            {connectionStatus === "ready" && "Secure services are awake and ready."}
+            {connectionStatus === "slow" && "First request may take a few extra seconds while hosted services wake up."}
+          </p>
+        )}
         <p className="subtle">Demo user: retired.officer@example.com / ChangeMe123!</p>
       </div>
     </div>

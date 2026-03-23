@@ -1,9 +1,10 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import SmartAssistant from "./SmartAssistant";
+import { warmApiConnection } from "../api/client";
 
 const ThreeScene = lazy(() => import("./ThreeScene"));
+const SmartAssistant = lazy(() => import("./SmartAssistant"));
 
 const links = [
   { to: "/", label: "Home", icon: "home" },
@@ -57,6 +58,51 @@ const pageMetaMap = {
     icon: "home"
   }
 };
+
+const searchEntries = [
+  {
+    title: "Check pension status",
+    description: "Review pension amount, next payment date, and pension requests.",
+    path: "/pension",
+    keywords: ["pension", "payment", "next payment", "status", "bank", "life certificate"]
+  },
+  {
+    title: "File a healthcare claim",
+    description: "Upload bills or prescriptions and track claim progress.",
+    path: "/healthcare",
+    keywords: ["claim", "healthcare", "medical", "hospital", "medicine", "reimbursement", "documents"]
+  },
+  {
+    title: "Book healthcare appointment",
+    description: "Find providers and schedule hospital or telehealth support.",
+    path: "/healthcare",
+    keywords: ["appointment", "doctor", "telehealth", "provider", "clinic", "hospital"]
+  },
+  {
+    title: "Explore job recommendations",
+    description: "See top career matches, reasoning, and upskilling advice.",
+    path: "/career",
+    keywords: ["job", "career", "resume", "match", "upskill", "employment", "workshop"]
+  },
+  {
+    title: "Order from CSD",
+    description: "Open the canteen store for groceries, electronics, and essentials.",
+    path: "/csd",
+    keywords: ["csd", "canteen", "store", "order", "cart", "grocery", "electronics", "essentials"]
+  },
+  {
+    title: "Check important notifications",
+    description: "See reminders, pension alerts, appointments, and deadlines.",
+    path: "/notifications",
+    keywords: ["notifications", "alerts", "reminders", "deadlines", "updates"]
+  },
+  {
+    title: "Profile and security",
+    description: "Manage 2FA, accessibility settings, and trusted account controls.",
+    path: "/profile",
+    keywords: ["profile", "security", "2fa", "accessibility", "contrast", "font", "privacy"]
+  }
+];
 
 function safeGetLocalItem(key) {
   try {
@@ -133,6 +179,7 @@ function ModuleIcon({ name, className = "module-icon" }) {
 }
 
 export default function Layout({ children }) {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { pathname } = useLocation();
   const rootRef = useRef(null);
@@ -165,11 +212,50 @@ export default function Layout({ children }) {
     if (typeof window === "undefined") return false;
     return safeGetLocalItem("aegis-projector-mode") === "1";
   });
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return [];
+
+    const parts = query.split(/\s+/).filter(Boolean);
+
+    return searchEntries
+      .map((entry) => {
+        const haystack = `${entry.title} ${entry.description} ${entry.keywords.join(" ")}`.toLowerCase();
+        const directHit = haystack.includes(query) ? 6 : 0;
+        const tokenHits = parts.reduce((sum, part) => sum + (haystack.includes(part) ? 2 : 0), 0);
+        const score = directHit + tokenHits;
+        return score > 0 ? { ...entry, score } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+  }, [searchQuery]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     safeSetLocalItem("aegis-projector-mode", projectorMode ? "1" : "0");
   }, [projectorMode]);
+
+  useEffect(() => {
+    const host = typeof window !== "undefined" ? window.location.hostname : "";
+    const isHostedPortal =
+      Boolean(host) && host !== "localhost" && host !== "127.0.0.1" && !host.startsWith("192.168.");
+
+    if (!isHostedPortal) return undefined;
+
+    warmApiConnection();
+    const timer = window.setInterval(() => {
+      warmApiConnection();
+    }, 4 * 60 * 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    setSearchQuery("");
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !rootRef.current) return;
@@ -278,6 +364,18 @@ export default function Layout({ children }) {
     window.speechSynthesis.speak(utterance);
   };
 
+  const openSearchResult = (result) => {
+    navigate(result.path);
+    setSearchQuery("");
+  };
+
+  const onSearchSubmit = (event) => {
+    event.preventDefault();
+    if (searchResults[0]) {
+      openSearchResult(searchResults[0]);
+    }
+  };
+
   return (
     <div
       ref={rootRef}
@@ -313,6 +411,33 @@ export default function Layout({ children }) {
             </NavLink>
           ))}
         </nav>
+        <form className="portal-search" onSubmit={onSearchSubmit} role="search" aria-label="Portal Search">
+          <input
+            className="portal-search-input"
+            type="search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search pension, claim, jobs, CSD..."
+            aria-label="Search portal services"
+          />
+          {searchQuery.trim() && (
+            <div className="portal-search-results">
+              {searchResults.length ? searchResults.map((result) => (
+                <button
+                  key={`${result.path}-${result.title}`}
+                  type="button"
+                  className="portal-search-result"
+                  onClick={() => openSearchResult(result)}
+                >
+                  <strong>{result.title}</strong>
+                  <span>{result.description}</span>
+                </button>
+              )) : (
+                <div className="portal-search-empty">No exact result yet. Try words like pension, claim, jobs, or CSD.</div>
+              )}
+            </div>
+          )}
+        </form>
         <div className="header-actions">
           <span className="module-pill" title="Current module">
             <ModuleIcon name={pageMeta.icon} className="pill-icon" />
@@ -346,7 +471,9 @@ export default function Layout({ children }) {
           Read This Page
         </button>
       )}
-      <SmartAssistant />
+      <Suspense fallback={null}>
+        <SmartAssistant />
+      </Suspense>
     </div>
   );
 }

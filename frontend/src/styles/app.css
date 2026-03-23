@@ -237,6 +237,81 @@ a {
   gap: 0.7rem;
 }
 
+.portal-search {
+  position: relative;
+  flex: 1 1 300px;
+  max-width: 360px;
+}
+
+.portal-search-input {
+  width: 100%;
+  min-height: 46px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.14);
+  color: #f8fbff;
+  padding: 0.72rem 0.9rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.portal-search-input::placeholder {
+  color: rgba(233, 244, 255, 0.82);
+}
+
+.portal-search-input:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.25);
+  outline-offset: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.portal-search-results {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.45rem;
+  border-radius: 14px;
+  border: 1px solid rgba(179, 208, 235, 0.8);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 18px 34px rgba(7, 31, 53, 0.22);
+  z-index: 25;
+}
+
+.portal-search-result,
+.portal-search-empty {
+  text-align: left;
+  width: 100%;
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+}
+
+.portal-search-result {
+  border: 1px solid transparent;
+  background: color-mix(in srgb, var(--accent) 4%, #ffffff);
+  color: #123252;
+}
+
+.portal-search-result:hover,
+.portal-search-result:focus {
+  border-color: color-mix(in srgb, var(--accent) 18%, #bfd1e4);
+  background: color-mix(in srgb, var(--accent) 8%, #f8fbff);
+  box-shadow: none;
+}
+
+.portal-search-result strong,
+.portal-search-result span {
+  display: block;
+}
+
+.portal-search-result span,
+.portal-search-empty {
+  color: #54708a;
+  font-size: 0.9rem;
+}
+
 .top-nav a {
   color: #e8f4ff;
   text-decoration: none;
@@ -661,6 +736,18 @@ th {
   padding: 1.3rem;
   box-shadow: 0 18px 36px rgba(9, 35, 62, 0.14);
   backdrop-filter: blur(7px);
+}
+
+.connection-status {
+  margin-top: 0.7rem;
+}
+
+.connection-status.ready {
+  color: #1c6a34;
+}
+
+.connection-status.slow {
+  color: #8a5a13;
 }
 
 .cinematic-intro {
@@ -1922,6 +2009,12 @@ th {
 
   .top-nav {
     justify-content: center;
+  }
+
+  .portal-search {
+    width: 100%;
+    max-width: 100%;
+    order: 3;
   }
 
   .header-actions {

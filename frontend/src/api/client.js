@@ -21,6 +21,7 @@ const API_BASE_CANDIDATES = [
   .filter((value, index, array) => array.indexOf(value) === index);
 
 const API_BASE = API_BASE_CANDIDATES[0] || "http://localhost:4000/api";
+let warmupPromise = null;
 
 async function parseResponseBody(res) {
   const contentType = res.headers.get("content-type") || "";
@@ -115,6 +116,35 @@ export async function apiRequest(path, { method = "GET", body, token } = {}) {
   throw new Error(
     `Unable to reach API. Tried: ${attemptedBases.join(", ")}. Check backend URL/CORS and run backend server.`
   );
+}
+
+export async function warmApiConnection() {
+  if (warmupPromise) return warmupPromise;
+
+  warmupPromise = (async () => {
+    for (const base of API_BASE_CANDIDATES) {
+      try {
+        const res = await fetch(`${base}/meta`, {
+          method: "GET",
+          headers: {
+            Accept: "application/json"
+          },
+          cache: "no-store"
+        });
+
+        const data = await parseResponseBody(res);
+        if (res.ok && !data?.isNonJsonResponse) return true;
+      } catch {
+        // Keep trying fallback bases quietly.
+      }
+    }
+
+    return false;
+  })().finally(() => {
+    warmupPromise = null;
+  });
+
+  return warmupPromise;
 }
 
 export { API_BASE, API_BASE_CANDIDATES };

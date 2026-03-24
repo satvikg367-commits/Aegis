@@ -4,31 +4,6 @@ import { apiRequest, warmApiConnection } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 
 const ThreeScene = lazy(() => import("../components/ThreeScene"));
-const INTRO_SEEN_KEY = "aegis:intro_seen";
-
-function safeGetSessionItem(key) {
-  try {
-    return window.sessionStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
-function safeSetSessionItem(key, value) {
-  try {
-    window.sessionStorage.setItem(key, value);
-  } catch {
-    // ignore storage-restricted browser modes
-  }
-}
-
-function safeRemoveSessionItem(key) {
-  try {
-    window.sessionStorage.removeItem(key);
-  } catch {
-    // ignore storage-restricted browser modes
-  }
-}
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -40,7 +15,7 @@ export default function LoginPage() {
       window.location.hostname.startsWith("192.168."));
   const enableThreeEffects = isLocalPortal;
   const isHostedPortal = typeof window !== "undefined" && !isLocalPortal;
-  const introDuration = useMemo(() => (isHostedPortal ? 1600 : 2200), [isHostedPortal]);
+  const introDuration = useMemo(() => 7000, []);
 
   const [email, setEmail] = useState("retired.officer@example.com");
   const [password, setPassword] = useState("ChangeMe123!");
@@ -49,15 +24,11 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState(isHostedPortal ? "warming" : "ready");
-  const [showIntro, setShowIntro] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return safeGetSessionItem(INTRO_SEEN_KEY) !== "1";
-  });
+  const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
     if (!showIntro) return;
     const timer = window.setTimeout(() => {
-      safeSetSessionItem(INTRO_SEEN_KEY, "1");
       setShowIntro(false);
     }, introDuration);
     return () => window.clearTimeout(timer);
@@ -115,12 +86,10 @@ export default function LoginPage() {
   };
 
   const skipIntro = () => {
-    safeSetSessionItem(INTRO_SEEN_KEY, "1");
     setShowIntro(false);
   };
 
   const replayIntro = () => {
-    safeRemoveSessionItem(INTRO_SEEN_KEY);
     setShowIntro(true);
   };
 

@@ -104,22 +104,6 @@ const searchEntries = [
   }
 ];
 
-function safeGetLocalItem(key) {
-  try {
-    return window.localStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
-function safeSetLocalItem(key, value) {
-  try {
-    window.localStorage.setItem(key, value);
-  } catch {
-    // ignore storage-restricted browser modes
-  }
-}
-
 function resolvePageKey(pathname) {
   if (pathname === "/") return "dashboard";
   if (pathname.startsWith("/pension")) return "pension";
@@ -210,10 +194,7 @@ export default function Layout({ children }) {
   const pageKey = useMemo(() => resolvePageKey(pathname), [pathname]);
   const pageMeta = pageMetaMap[pageKey] || pageMetaMap.default;
 
-  const [projectorMode, setProjectorMode] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return safeGetLocalItem("aegis-projector-mode") === "1";
-  });
+  const [projectorMode, setProjectorMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const searchResults = useMemo(() => {
@@ -234,11 +215,6 @@ export default function Layout({ children }) {
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);
   }, [searchQuery]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    safeSetLocalItem("aegis-projector-mode", projectorMode ? "1" : "0");
-  }, [projectorMode]);
 
   useEffect(() => {
     if (isLocalPortal) return undefined;

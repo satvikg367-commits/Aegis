@@ -1,0 +1,20 @@
+{
+  "name": "AEGIS Portal",
+  "short_name": "AEGIS",
+  "description": "Unified portal for retired defence officers to manage pension, healthcare, career support, CSD, and smart assistance.",
+  "theme_color": "#1d4f91",
+  "background_color": "#1d4f91",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

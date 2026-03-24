@@ -798,7 +798,7 @@ th {
 }
 
 .cinematic-intro.hosted-lite .cinematic-progress-fill {
-  animation-duration: 1.6s;
+  animation-duration: 10s;
 }
 
 .cinematic-noise {
@@ -940,7 +940,7 @@ th {
   transform: scaleX(0);
   background: linear-gradient(90deg, #5fb9ff, #1b96f5);
   box-shadow: 0 0 18px rgba(41, 159, 255, 0.7);
-  animation: intro-progress 4.3s linear forwards;
+  animation: intro-progress 10s linear forwards;
 }
 
 .cinematic-skip {

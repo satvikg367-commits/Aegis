@@ -3,45 +3,10 @@ import { apiRequest } from "../api/client";
 
 const AuthContext = createContext(null);
 
-function safeGetItem(key) {
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return "";
-  }
-}
-
-function safeSetItem(key, value) {
-  try {
-    localStorage.setItem(key, value);
-  } catch {
-    // ignore storage errors in restricted browser modes
-  }
-}
-
-function safeRemoveItem(key) {
-  try {
-    localStorage.removeItem(key);
-  } catch {
-    // ignore storage errors in restricted browser modes
-  }
-}
-
-function loadStoredUser() {
-  try {
-    const raw = safeGetItem("portal_user");
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch {
-    safeRemoveItem("portal_user");
-    return null;
-  }
-}
-
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => safeGetItem("portal_token") || "");
-  const [user, setUser] = useState(() => loadStoredUser());
-  const [loading, setLoading] = useState(Boolean(token));
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -52,7 +17,6 @@ export function AuthProvider({ children }) {
     apiRequest("/auth/me", { token })
       .then((data) => {
         setUser(data.user);
-        safeSetItem("portal_user", JSON.stringify(data.user));
       })
       .catch((err) => {
         const message = String(err?.message || "").toLowerCase();
@@ -67,8 +31,6 @@ export function AuthProvider({ children }) {
         if (shouldInvalidateSession) {
           setToken("");
           setUser(null);
-          safeRemoveItem("portal_token");
-          safeRemoveItem("portal_user");
         }
       })
       .finally(() => setLoading(false));
@@ -77,22 +39,17 @@ export function AuthProvider({ children }) {
   const login = ({ token: nextToken, user: nextUser }) => {
     setToken(nextToken);
     setUser(nextUser);
-    safeSetItem("portal_token", nextToken);
-    safeSetItem("portal_user", JSON.stringify(nextUser));
   };
 
   const logout = () => {
     setToken("");
     setUser(null);
-    safeRemoveItem("portal_token");
-    safeRemoveItem("portal_user");
   };
 
   const refreshUser = async () => {
     if (!token) return;
     const data = await apiRequest("/auth/me", { token });
     setUser(data.user);
-    safeSetItem("portal_user", JSON.stringify(data.user));
   };
 
   const value = useMemo(
